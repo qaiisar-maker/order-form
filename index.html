@@ -7,58 +7,46 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="FGI Orders">
-<link rel="manifest" id="fgi-order-manifest">
-<link rel="apple-touch-icon" id="fgi-order-icon">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>FGI Order Form</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
-<script>
-(function(){
-  var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="80" fill="#1a4a8c"/><rect x="0" y="400" width="512" height="20" fill="#f0c040"/><text x="256" y="300" font-family="Arial Black,sans-serif" font-weight="900" font-size="190" fill="#f0c040" text-anchor="middle">FGI</text><text x="256" y="385" font-family="Arial,sans-serif" font-size="55" fill="#f7d96a" text-anchor="middle">ORDER</text></svg>';
-  var url='data:image/svg+xml;base64,'+btoa(svg);
-  var al=document.getElementById('fgi-order-icon');
-  if(al){al.href=url;al.setAttribute('sizes','512x512');}
-  var m={name:'FGI Order Form',short_name:'FGI Orders',display:'standalone',orientation:'portrait',background_color:'#1a4a8c',theme_color:'#1a4a8c',start_url:'.',icons:[{src:url,sizes:'512x512',type:'image/svg+xml'}]};
-  var ml=document.getElementById('fgi-order-manifest');
-  if(ml){try{var b=new Blob([JSON.stringify(m)],{type:'application/json'});ml.href=URL.createObjectURL(b);}catch(e){}}
-})();
-</script>
 <style>
-:root{
-  --navy:#1a4a8c;--navy2:#1e5aa8;--navy3:#2666ba;
-  --gold:#f0c040;--gold2:#f7d96a;
-  --white:#fff;--gray1:#f0f5ff;--gray2:#dce8f8;--gray3:#a8c4e8;
-  --text:#0d2a5a;--text2:#3a5a8a;
-  --green:#1a7f5a;--red:#c0392b;--orange:#e07b00;
-  --radius:12px;
-}
+:root{--navy:#1a4a8c;--navy2:#1e5aa8;--navy3:#2666ba;--gold:#f0c040;--gold2:#f7d96a;--white:#fff;--gray1:#f0f5ff;--gray2:#dce8f8;--gray3:#a8c4e8;--text:#0d2a5a;--text2:#3a5a8a;--green:#1a7f5a;--red:#c0392b;--orange:#e07b00;--radius:12px;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Barlow',sans-serif;background:var(--gray1);color:var(--text);min-height:100vh;}
 
-/* ── TOP NAV ── */
+/* OFFLINE BAR */
+#offlineBar{display:none;position:fixed;top:0;left:0;right:0;z-index:10000;background:#c0392b;color:#fff;text-align:center;padding:6px 10px;font-size:11px;font-weight:700;}
+
+/* FOLDER PICKER */
+#fpModal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9990;display:none;align-items:center;justify-content:center;padding:20px;}
+#fpBox{background:#fff;border-radius:18px;padding:22px;width:100%;max-width:310px;box-shadow:0 8px 40px rgba(0,0,0,.4);}
+.fp-ttl{color:var(--navy);font-size:15px;font-weight:700;font-family:'Barlow Condensed',sans-serif;margin-bottom:4px;}
+.fp-sub{font-size:11px;color:#666;margin-bottom:14px;}
+.fp-rbtn{width:100%;padding:13px;border:none;border-radius:9px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:7px;}
+.fp-cancel{width:100%;padding:9px;border:1.5px solid #ddd;border-radius:9px;font-family:'Barlow',sans-serif;font-size:12px;cursor:pointer;background:none;color:#666;}
+
+/* FORGOT PASSWORD */
+#forgot-panel{display:none;width:100%;max-width:320px;}
+.fp-qdiv{background:rgba(240,192,64,0.15);border-radius:9px;padding:10px;color:#f0c040;font-size:12px;font-weight:600;margin-bottom:8px;line-height:1.5;}
+
 .topnav{background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:56px;position:sticky;top:0;z-index:100;}
 .nav-logo{font-family:'Barlow Condensed',sans-serif;color:var(--gold);font-size:26px;font-weight:900;letter-spacing:2px;}
 .nav-title{color:var(--gold2);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 .nav-btn{background:var(--navy2);border:1.5px solid var(--navy3);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;padding:6px 14px;border-radius:8px;cursor:pointer;letter-spacing:.5px;}
 .nav-btn:active{background:var(--gold);color:var(--navy);}
-
-/* ── VIEWS ── */
-.view{display:none;padding:14px;max-width:480px;margin:0 auto;}
+.view{display:none;padding:14px;padding-bottom:80px;max-width:480px;margin:0 auto;}
 .view.active{display:block;}
-
-/* ── CARDS ── */
 .card{background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(13,27,42,.07);}
 .card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--navy);letter-spacing:.5px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--gold);}
-
-/* ── FORM ── */
 .fr{margin-bottom:12px;}
 .fr label{display:block;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
 .fr input,.fr select,.fr textarea{width:100%;padding:10px 12px;border:1.5px solid var(--gray2);border-radius:8px;font-size:14px;font-family:'Barlow',sans-serif;color:var(--text);background:#fff;transition:border-color .15s;}
 .fr input:focus,.fr select:focus{outline:none;border-color:var(--gold);}
 .fr-row{display:flex;gap:10px;}
 .fr-row .fr{flex:1;}
-
-/* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:9px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;letter-spacing:.5px;transition:all .15s;}
 .btn:active{transform:scale(.97);}
 .btn-gold{background:var(--gold);color:var(--navy);}
@@ -69,8 +57,6 @@ body{font-family:'Barlow',sans-serif;background:var(--gray1);color:var(--text);m
 .btn-orange{background:var(--orange);color:#fff;}
 .btn-sm{padding:7px 12px;font-size:12px;}
 .btn-full{width:100%;justify-content:center;}
-
-/* ── ITEMS TABLE ── */
 .items-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;}
 .items-table th{background:var(--navy);color:var(--gold2);padding:7px 6px;text-align:center;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
 .items-table th.left{text-align:left;padding-left:10px;}
@@ -79,10 +65,7 @@ body{font-family:'Barlow',sans-serif;background:var(--gray1);color:var(--text);m
 .items-table tr:nth-child(even) td{background:var(--gray1);}
 .del-btn{background:none;border:none;color:var(--red);cursor:pointer;font-size:16px;padding:2px 6px;}
 .edit-btn{background:none;border:none;color:var(--navy2);cursor:pointer;font-size:14px;padding:2px 6px;}
-
-/* ── ORDER LIST ── */
-.order-item{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(13,27,42,.06);border-left:4px solid var(--gold);cursor:pointer;transition:box-shadow .15s;}
-.order-item:active{box-shadow:0 4px 14px rgba(13,27,42,.13);}
+.order-item{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(13,27,42,.06);border-left:4px solid var(--gold);cursor:pointer;}
 .order-item-top{display:flex;justify-content:space-between;align-items:flex-start;}
 .order-name{font-size:15px;font-weight:700;color:var(--navy);}
 .order-badge{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:3px 9px;border-radius:5px;letter-spacing:.5px;}
@@ -90,128 +73,120 @@ body{font-family:'Barlow',sans-serif;background:var(--gray1);color:var(--text);m
 .badge-done{background:#d4edda;color:#155724;}
 .order-meta{font-size:11px;color:var(--text2);margin-top:4px;}
 .order-meta span{margin-right:10px;}
-
-/* ── REPORT CARD ── */
 .customer-card{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(13,27,42,.06);cursor:pointer;border-left:4px solid var(--navy);}
-.customer-card:active{box-shadow:0 4px 14px rgba(13,27,42,.13);}
 .customer-card-name{font-size:15px;font-weight:800;color:var(--navy);}
 .customer-card-meta{font-size:11px;color:var(--text2);margin-top:4px;}
 .cust-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;letter-spacing:.5px;margin-right:5px;}
 .cust-badge-total{background:var(--navy);color:var(--gold);}
 .cust-badge-done{background:#d4edda;color:#155724;}
 .cust-badge-pending{background:#fff3cd;color:#856404;}
-
-/* ── REPORT DETAIL ── */
-.report-order-item{background:#fff;border-radius:9px;padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 5px rgba(13,27,42,.06);border-left:3px solid var(--gold);cursor:pointer;transition:box-shadow .15s;}
-.report-order-item:active{box-shadow:0 3px 10px rgba(13,27,42,.12);}
-
-/* ── TOAST ── */
+.report-order-item{background:#fff;border-radius:9px;padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 5px rgba(13,27,42,.06);border-left:3px solid var(--gold);cursor:pointer;}
 #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1b2d42;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
 #toast.show{opacity:1;}
-
-/* ── MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(13,27,42,.7);z-index:500;display:none;align-items:flex-end;justify-content:center;}
 .modal-overlay.open{display:flex;}
 .modal-box{background:#fff;border-radius:16px 16px 0 0;padding:20px;width:100%;max-width:480px;max-height:85vh;overflow-y:auto;}
 .modal-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:14px;}
 .modal-actions{display:flex;gap:10px;margin-top:16px;}
-
-/* ── SAVE STATUS ── */
 .save-status{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:#888;padding:4px 8px;background:var(--navy3);border-radius:5px;}
 .save-dot{width:7px;height:7px;border-radius:50%;background:#888;}
 .save-dot.green{background:#1a7f5a;}
 .save-dot.orange{background:var(--orange);}
-
-/* ── EMPTY ── */
 .empty{text-align:center;padding:40px 20px;color:var(--text2);}
 .empty-icon{font-size:44px;margin-bottom:10px;}
-
-/* ── BOTTOM BAR ── */
 .bottombar{position:fixed;bottom:0;left:0;right:0;background:var(--navy);display:flex;border-top:2px solid var(--navy3);z-index:100;}
 .bb-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0 8px;cursor:pointer;border:none;background:none;color:var(--gray3);font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;gap:3px;transition:color .15s;}
 .bb-btn.active{color:var(--gold);}
 .bb-btn svg{width:20px;height:20px;}
-
-/* ── IMAGE RENDER ── */
 #img-render-wrap{position:fixed;left:-9999px;top:0;width:420px;background:#fff;z-index:-1;}
-
-/* spacing for bottom bar */
-.view{padding-bottom:80px;}
-
-/* search bar */
 .search-bar{background:#fff;border:1.5px solid var(--gray2);border-radius:9px;padding:9px 12px;font-size:14px;font-family:'Barlow',sans-serif;width:100%;margin-bottom:12px;color:var(--text);}
 .search-bar:focus{outline:none;border-color:var(--gold);}
 </style>
 </head>
 <body>
 
-<!-- PASSWORD LOCK SCREEN -->
-<div id="lock-screen" style="position:fixed;inset:0;background:linear-gradient(160deg,#1a4a8c 0%,#0d2a5a 60%,#051530 100%);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;">
+<div id="offlineBar">&#x1F4F5; OFFLINE MODE — Data safe hai</div>
 
-  <!-- LOCK PANEL (default) -->
-  <div id="lock-panel">
-    <div style="display:flex;flex-direction:column;align-items:center;">
-      <div style="width:80px;height:80px;background:rgba(255,255,255,.08);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;border:2px solid rgba(240,192,64,.3);">
-        <svg width="40" height="40" fill="none" stroke="#f0c040" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      </div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#f0c040;letter-spacing:2px;margin-bottom:4px;">FGI</div>
-      <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase;margin-bottom:32px;">Order Management</div>
+<!-- FOLDER PICKER -->
+<div id="fpModal">
+  <div id="fpBox">
+    <div class="fp-ttl" id="fpModalTitle">&#x1F4C1; Kahan Save Karein?</div>
+    <div class="fp-sub" id="fpModalSub">File save karne ki jagah chunein</div>
+    <button class="fp-rbtn" style="background:#1a4a8c;color:#f0c040;" onclick="fpAction('dl')">&#x1F4E5; Downloads Folder</button>
+    <button class="fp-rbtn" style="background:#128C7E;color:white;" onclick="fpAction('sh')">&#x1F4E4; Share / WhatsApp</button>
+    <button class="fp-cancel" onclick="closeFP()">Baad mein</button>
+  </div>
+</div>
 
-      <div style="width:100%;max-width:320px;">
-        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Password</div>
-        <input type="password" id="lock-input" placeholder="••••••••" autocomplete="current-password"
-          style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:18px;font-family:'Barlow',sans-serif;letter-spacing:4px;outline:none;text-align:center;transition:border-color .2s;"
-          onfocus="this.style.borderColor='rgba(240,192,64,.7)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"
-          onkeydown="if(event.key==='Enter')checkPassword()">
-        <div id="lock-error" style="color:#ff6b6b;font-size:12px;font-weight:600;text-align:center;margin-top:8px;min-height:18px;"></div>
-        <button onclick="checkPassword()"
-          style="width:100%;margin-top:16px;padding:14px;background:linear-gradient(90deg,#f0c040,#f7d96a);color:#1a4a8c;border:none;border-radius:12px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;cursor:pointer;">
-          🔓 ENTER
-        </button>
-        <button onclick="showChangePanel()"
-          style="width:100%;margin-top:10px;padding:11px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;">
-          🔑 Password Change Karein
-        </button>
-      </div>
+
+<!-- LOCK SCREEN -->
+<div id="lock-screen" style="position:fixed;inset:0;background:linear-gradient(160deg,#1a4a8c 0%,#0d2a5a 60%,#051530 100%);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;overflow-y:auto;">
+
+  <!-- LOCK PANEL -->
+  <div id="lock-panel" style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:320px;">
+    <div style="width:80px;height:80px;background:rgba(255,255,255,.08);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;border:2px solid rgba(240,192,64,.3);">
+      <svg width="40" height="40" fill="none" stroke="#f0c040" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#f0c040;letter-spacing:2px;margin-bottom:4px;">FGI</div>
+    <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase;margin-bottom:32px;">Order Management</div>
+    <div style="width:100%;">
+      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Password</div>
+      <input type="password" id="lock-input" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" autocomplete="current-password"
+        style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:18px;font-family:'Barlow',sans-serif;letter-spacing:4px;outline:none;text-align:center;"
+        onfocus="this.style.borderColor='rgba(240,192,64,.7)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"
+        onkeydown="if(event.key==='Enter')checkPassword()">
+      <div id="lock-error" style="color:#ff6b6b;font-size:12px;font-weight:600;text-align:center;margin-top:8px;min-height:18px;"></div>
+      <button onclick="checkPassword()"
+        style="width:100%;margin-top:16px;padding:14px;background:linear-gradient(90deg,#f0c040,#f7d96a);color:#1a4a8c;border:none;border-radius:12px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;cursor:pointer;">
+        &#x1F513; ENTER
+      </button>
+      <button onclick="showChangePanel()"
+        style="width:100%;margin-top:10px;padding:11px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">
+        &#x1F511; Password Change Karein
+      </button>
+      <button onclick="showForgotPanel()"
+        style="width:100%;margin-top:8px;padding:10px;background:transparent;color:rgba(255,255,255,.4);border:none;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-decoration:underline;">
+        &#x1F513; Password Bhool Gaye?
+      </button>
     </div>
   </div>
 
   <!-- CHANGE PASSWORD PANEL -->
   <div id="change-panel" style="display:none;width:100%;max-width:320px;">
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#f0c040;letter-spacing:1px;text-align:center;margin-bottom:6px;">🔑 Password Change</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#f0c040;letter-spacing:1px;text-align:center;margin-bottom:6px;">&#x1F511; Password Change</div>
     <div style="font-size:12px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:24px;">Pehle purana password daal kar confirm karein</div>
-
-    <div style="margin-bottom:12px;">
-      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Purana Password</div>
-      <input type="password" id="old-pass" placeholder="••••••••"
-        style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:16px;font-family:'Barlow',sans-serif;letter-spacing:3px;outline:none;text-align:center;transition:border-color .2s;"
-        onfocus="this.style.borderColor='rgba(240,192,64,.7)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'">
-    </div>
-    <div style="margin-bottom:12px;">
-      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Naya Password</div>
-      <input type="password" id="new-pass" placeholder="••••••••"
-        style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:16px;font-family:'Barlow',sans-serif;letter-spacing:3px;outline:none;text-align:center;transition:border-color .2s;"
-        onfocus="this.style.borderColor='rgba(240,192,64,.7)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'">
-    </div>
-    <div style="margin-bottom:12px;">
-      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Naya Password (Confirm)</div>
-      <input type="password" id="confirm-pass" placeholder="••••••••"
-        style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:16px;font-family:'Barlow',sans-serif;letter-spacing:3px;outline:none;text-align:center;transition:border-color .2s;"
-        onfocus="this.style.borderColor='rgba(240,192,64,.7)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"
-        onkeydown="if(event.key==='Enter')doChangePassword()">
-    </div>
+    <div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;margin-bottom:6px;">Purana Password</div>
+    <input type="password" id="old-pass" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:16px;font-family:'Barlow',sans-serif;letter-spacing:3px;outline:none;text-align:center;" onfocus="this.style.borderColor='rgba(240,192,64,.7)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"></div>
+    <div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;margin-bottom:6px;">Naya Password</div>
+    <input type="password" id="new-pass" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:16px;font-family:'Barlow',sans-serif;letter-spacing:3px;outline:none;text-align:center;" onfocus="this.style.borderColor='rgba(240,192,64,.7)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"></div>
+    <div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;margin-bottom:6px;">Naya Password (Confirm)</div>
+    <input type="password" id="confirm-pass" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:16px;font-family:'Barlow',sans-serif;letter-spacing:3px;outline:none;text-align:center;" onfocus="this.style.borderColor='rgba(240,192,64,.7)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'" onkeydown="if(event.key==='Enter')doChangePassword()"></div>
     <div id="change-error" style="color:#ff6b6b;font-size:12px;font-weight:600;text-align:center;margin-bottom:10px;min-height:18px;"></div>
-    <button onclick="doChangePassword()"
-      style="width:100%;padding:13px;background:linear-gradient(90deg,#f0c040,#f7d96a);color:#1a4a8c;border:none;border-radius:12px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;cursor:pointer;margin-bottom:10px;">
-      ✅ Password Save Karein
+    <button onclick="doChangePassword()" style="width:100%;padding:13px;background:linear-gradient(90deg,#f0c040,#f7d96a);color:#1a4a8c;border:none;border-radius:12px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:10px;">&#x2705; Password Save Karein</button>
+    <button onclick="showLockPanel()" style="width:100%;padding:11px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">&#x2190; Wapis</button>
+  </div>
+
+
+  <!-- FORGOT PASSWORD PANEL -->
+  <div id="forgot-panel">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#f0c040;letter-spacing:1px;text-align:center;margin-bottom:6px;">&#x1F513; Password Reset</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:20px;">Secret question ka jawab dein</div>
+    <div class="fp-qdiv" id="forgot-q">Loading...</div>
+    <input type="text" id="forgot-ans" placeholder="Jawab likhein..."
+      style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:14px;font-family:'Barlow',sans-serif;outline:none;text-align:center;margin-bottom:8px;"
+      onfocus="this.style.borderColor='rgba(240,192,64,.7)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'">
+    <div id="forgot-err" style="color:#ff6b6b;font-size:12px;text-align:center;min-height:16px;margin-bottom:8px;"></div>
+    <button onclick="verifyForgotPass()"
+      style="width:100%;padding:13px;background:linear-gradient(90deg,#f0c040,#f7d96a);color:#1a4a8c;border:none;border-radius:12px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:10px;">
+      &#x2705; Verify Karein
     </button>
     <button onclick="showLockPanel()"
       style="width:100%;padding:11px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">
-      ← Wapis
+      &#x2190; Wapis
     </button>
   </div>
 
-  <div style="position:absolute;bottom:24px;font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.5px;">Faisal Goraya Industry © 2025</div>
+  <div style="position:absolute;bottom:24px;font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.5px;">Faisal Goraya Industry &copy; 2025</div>
 </div>
 
 <!-- TOP NAV -->
@@ -219,62 +194,64 @@ body{font-family:'Barlow',sans-serif;background:var(--gray1);color:var(--text);m
   <div class="nav-logo">FGI</div>
   <div class="nav-title" id="nav-title">Order Form</div>
   <div style="display:flex;align-items:center;gap:8px;">
-    <div class="save-status" id="save-status">
-      <div class="save-dot" id="save-dot"></div>
-      <span id="save-label">---</span>
-    </div>
-    <button class="nav-btn" onclick="showView('new-order')">＋ New</button>
+    <div class="save-status" id="save-status"><div class="save-dot" id="save-dot"></div><span id="save-label">---</span></div>
+    <button class="nav-btn" onclick="showView('new-order')">&#xFF0B; New</button>
   </div>
 </div>
 
-<!-- TOAST -->
 <div id="toast"></div>
-
-<!-- IMAGE RENDER AREA -->
 <div id="img-render-wrap"></div>
 
 <!-- DATA MODAL -->
 <div class="modal-overlay" id="data-modal">
   <div class="modal-box">
-    <div class="modal-title">💾 Data Management</div>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">IP ya device change hone par JSON export kar lo — phir naye device pe import karo. Sab data wapis aa jaye ga.</p>
-
+    <div class="modal-title">&#x1F4BE; Data Management</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">Device change hone par JSON export kar lo — phir naye device pe import karo.</p>
     <div style="background:var(--gray1);border-radius:10px;padding:14px;margin-bottom:12px;">
-      <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;">📤 Export (Backup lena)</div>
-      <button class="btn btn-navy btn-full" onclick="exportData()" style="margin-bottom:0;">💾 JSON Export Karo</button>
+      <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;">&#x1F4E4; Export (Backup lena)</div>
+      <button class="btn btn-navy btn-full" onclick="exportData()">&#x1F4BE; JSON Export Karo</button>
     </div>
-
     <div style="background:var(--gray1);border-radius:10px;padding:14px;margin-bottom:12px;">
-      <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;">📥 Import (Data restore karna)</div>
-      <label style="display:block;background:var(--green);color:#fff;padding:10px 16px;border-radius:9px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.5px;">
-        📁 JSON File Select Karo
+      <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;">&#x1F4E5; Import (Data restore)</div>
+      <label style="display:block;background:var(--green);color:#fff;padding:10px 16px;border-radius:9px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">
+        &#x1F4C1; JSON File Select Karo
         <input type="file" accept=".json" id="import-file" style="display:none;" onchange="importData(event)">
       </label>
-      <div style="font-size:11px;color:var(--text2);margin-top:6px;text-align:center;">⚠️ Import karne se purana data replace ho ga</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:6px;text-align:center;">&#x26A0;&#xFE0F; Import karne se purana data replace ho ga</div>
     </div>
 
-    <div style="background:#fff8e8;border-left:3px solid var(--gold);border-radius:6px;padding:10px 12px;margin-bottom:12px;">
-      <div style="font-size:11px;color:var(--text);font-weight:600;">💡 Tip: Roz ek baar Export karo aur safe jagah rakh lo (WhatsApp, Google Drive).</div>
+    <div style="background:var(--gray1);border-radius:10px;padding:14px;margin-bottom:12px;">
+      <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;">&#x1F511; Secret Question (Password Recovery)</div>
+      <div id="sq-status" style="font-size:11px;color:#888;margin-bottom:8px;">Loading...</div>
+      <select id="sq-select" style="width:100%;padding:9px 12px;border:1.5px solid var(--gray2);border-radius:8px;font-size:13px;font-family:'Barlow',sans-serif;color:var(--text);background:#fff;margin-bottom:8px;">
+        <option value="">-- Sawal chunein --</option>
+        <option>Aapki ammi ka naam kya hai?</option>
+        <option>Aapke school ka naam kya tha?</option>
+        <option>Aapka pehla dost kaun tha?</option>
+        <option>Aapke ghar ka mohalla?</option>
+        <option>Aapka favorite khana?</option>
+        <option>Aapke abbu ka pehla naam?</option>
+        <option>Aapka gaon ya shehar?</option>
+      </select>
+      <input type="text" id="sq-answer" placeholder="Jawab likhein — yaad rakhein!" 
+        style="width:100%;padding:9px 12px;border:1.5px solid var(--gray2);border-radius:8px;font-size:13px;font-family:'Barlow',sans-serif;color:var(--text);background:#fff;margin-bottom:8px;">
+      <button class="btn btn-navy btn-full" onclick="saveSQ()" style="margin-bottom:0;">&#x1F4BE; Secret Question Save</button>
     </div>
 
-    <div class="modal-actions">
-      <button class="btn btn-gray btn-full" onclick="closeDataModal()">✕ Band Karo</button>
-    </div>
+    <div class="modal-actions"><button class="btn btn-gray btn-full" onclick="closeDataModal()">&#x2715; Band Karo</button></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════ VIEW: ORDER LIST ═══════════════════════════════ -->
+<!-- ORDER LIST -->
 <div class="view active" id="view-list">
-  <input class="search-bar" type="text" id="search-input" placeholder="🔍 Customer naam ya order number..." oninput="renderOrderList()">
+  <input class="search-bar" type="text" id="search-input" placeholder="&#x1F50D; Customer naam ya order number..." oninput="renderOrderList()">
   <div id="order-list-container"></div>
 </div>
 
-<!-- ═══════════════════════════════ VIEW: NEW / EDIT ORDER ═══════════════════════════════ -->
+<!-- NEW ORDER -->
 <div class="view" id="view-new-order">
-
-  <!-- Client Info -->
   <div class="card">
-    <div class="card-title">👤 Client Information</div>
+    <div class="card-title">&#x1F464; Client Information</div>
     <div class="fr-row">
       <div class="fr" style="flex:.6;"><label>Order # *</label><input type="text" id="order-no" placeholder="FGI-001" autocomplete="off" style="font-weight:700;text-transform:uppercase;"></div>
       <div class="fr" style="flex:1.4;"><label>Client Name *</label><input type="text" id="client-name" placeholder="Customer naam likhein..." autocomplete="off"></div>
@@ -289,12 +266,8 @@ body{font-family:'Barlow',sans-serif;background:var(--gray1);color:var(--text);m
     </div>
     <div class="fr"><label>Notes (Optional)</label><input type="text" id="order-notes" placeholder="Koi khas hidayat..." autocomplete="off"></div>
   </div>
-
-  <!-- Items -->
   <div class="card">
-    <div class="card-title">📦 Items</div>
-
-    <!-- Add Item Form -->
+    <div class="card-title">&#x1F4E6; Items</div>
     <div style="background:var(--gray1);border-radius:10px;padding:12px;margin-bottom:12px;" id="item-form-area">
       <div class="fr-row">
         <div class="fr" style="flex:.5;"><label>Code #</label><input type="text" id="item-code" placeholder="059" autocomplete="off" style="text-transform:uppercase;"></div>
@@ -304,58 +277,42 @@ body{font-family:'Barlow',sans-serif;background:var(--gray1);color:var(--text);m
         <div class="fr"><label>Qty *</label><input type="number" id="item-qty" placeholder="0" min="0"></div>
         <div class="fr"><label>Unit (optional)</label><input type="text" id="item-unit" placeholder="pcs / kg / m" autocomplete="off"></div>
       </div>
-      <button class="btn btn-gold btn-full" onclick="addOrderItem()" id="add-item-btn">＋ Add Item</button>
+      <button class="btn btn-gold btn-full" onclick="addOrderItem()" id="add-item-btn">&#xFF0B; Add Item</button>
     </div>
-
-    <!-- Items Table -->
     <div id="order-items-wrap">
       <table class="items-table" id="order-items-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Code</th>
-            <th class="left">Description</th>
-            <th>Qty</th>
-            <th>Unit</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="order-items-body">
-          <tr><td colspan="6" style="text-align:center;padding:14px;color:#aaa;">Koi item nahi — upar se add karo</td></tr>
-        </tbody>
+        <thead><tr><th>#</th><th>Code</th><th class="left">Description</th><th>Qty</th><th>Unit</th><th>Action</th></tr></thead>
+        <tbody id="order-items-body"><tr><td colspan="6" style="text-align:center;padding:14px;color:#aaa;">Koi item nahi</td></tr></tbody>
       </table>
     </div>
   </div>
-
-  <!-- Save -->
   <div style="display:flex;gap:10px;margin-bottom:10px;">
-    <button class="btn btn-gray btn-sm" onclick="cancelOrder()" style="flex:1;justify-content:center;">✕ Cancel</button>
-    <button class="btn btn-navy btn-full" onclick="saveOrder()" id="save-order-btn" style="flex:2;">💾 Save Order</button>
+    <button class="btn btn-gray btn-sm" onclick="cancelOrder()" style="flex:1;justify-content:center;">&#x2715; Cancel</button>
+    <button class="btn btn-navy btn-full" onclick="saveOrder()" id="save-order-btn" style="flex:2;">&#x1F4BE; Save Order</button>
   </div>
-
 </div>
 
-<!-- ═══════════════════════════════ VIEW: ORDER DETAIL ═══════════════════════════════ -->
+<!-- ORDER DETAIL -->
 <div class="view" id="view-detail">
   <div style="display:flex;gap:8px;margin-bottom:12px;" id="detail-back-row">
-    <button class="btn btn-gray btn-sm" id="detail-back-btn" onclick="showView('list')">← Back</button>
-    <button class="btn btn-navy btn-sm" onclick="editCurrentOrder()" style="flex:1;justify-content:center;">✏️ Edit</button>
-    <button class="btn btn-green btn-sm" onclick="generateOrderImage()" style="flex:1;justify-content:center;">📸 Image</button>
-    <button class="btn btn-red btn-sm" onclick="deleteCurrentOrder()">🗑</button>
+    <button class="btn btn-gray btn-sm" id="detail-back-btn" onclick="showView('list')">&#x2190; Back</button>
+    <button class="btn btn-navy btn-sm" onclick="editCurrentOrder()" style="flex:1;justify-content:center;">&#x270F;&#xFE0F; Edit</button>
+    <button class="btn btn-green btn-sm" onclick="generateOrderImage()" style="flex:1;justify-content:center;">&#x1F4F8; Image</button>
+    <button class="btn btn-red btn-sm" onclick="deleteCurrentOrder()">&#x1F5D1;</button>
   </div>
   <div id="detail-container"></div>
 </div>
 
-<!-- ═══════════════════════════════ VIEW: REPORT CARD ═══════════════════════════════ -->
+<!-- REPORT -->
 <div class="view" id="view-report">
-  <input class="search-bar" type="text" id="report-search" placeholder="🔍 Customer naam dhundho..." oninput="renderReport()">
+  <input class="search-bar" type="text" id="report-search" placeholder="&#x1F50D; Customer naam dhundho..." oninput="renderReport()">
   <div id="report-container"></div>
 </div>
 
-<!-- ═══════════════════════════════ VIEW: CUSTOMER ORDERS ═══════════════════════════════ -->
+<!-- CUSTOMER ORDERS -->
 <div class="view" id="view-customer">
   <div style="display:flex;gap:8px;margin-bottom:12px;">
-    <button class="btn btn-gray btn-sm" onclick="showView('report')">← Wapis</button>
+    <button class="btn btn-gray btn-sm" onclick="showView('report')">&#x2190; Wapis</button>
     <div style="flex:1;"></div>
   </div>
   <div id="customer-header"></div>
@@ -383,852 +340,231 @@ body{font-family:'Barlow',sans-serif;background:var(--gray1);color:var(--text);m
 </div>
 
 <script>
+
 // ══════════════════════════════════════════
+// ── IndexedDB — Password & Secret Q ──
+// ══════════════════════════════════════════
+var OF_IDB=null;
+function openOFIDB(){
+  return new Promise(function(res){
+    try{
+      var r=indexedDB.open('FGIOrderSec',1);
+      r.onupgradeneeded=function(e){e.target.result.createObjectStore('sec');};
+      r.onsuccess=function(e){OF_IDB=e.target.result;res();};
+      r.onerror=function(){res();};
+    }catch(e){res();}
+  });
+}
+function ofSet(k,v){return new Promise(function(res){if(!OF_IDB){res();return;}var tx=OF_IDB.transaction('sec','readwrite');tx.objectStore('sec').put(v,k);tx.oncomplete=function(){res();};tx.onerror=function(){res();};}); }
+function ofGet(k){return new Promise(function(res){if(!OF_IDB){res(null);return;}var tx=OF_IDB.transaction('sec','readonly');var r=tx.objectStore('sec').get(k);r.onsuccess=function(){res(r.result!==undefined?r.result:null);};r.onerror=function(){res(null);};}); }
+
+var DEFAULT_PASSWORD='fgi2025';
+var APP_PASSWORD=DEFAULT_PASSWORD;
+
+async function loadPassword(){
+  var p=await ofGet('pwd');
+  if(!p) p=localStorage.getItem('fgi_password');
+  APP_PASSWORD=p||DEFAULT_PASSWORD;
+}
+
+async function savePassword(p){
+  APP_PASSWORD=p;
+  await ofSet('pwd',p);
+  localStorage.setItem('fgi_password',p);
+}
+
+async function getSQ(){
+  var r=await ofGet('sq')||localStorage.getItem('of_sq');
+  return r?JSON.parse(r):null;
+}
+async function saveSQData(q,a){
+  var d=JSON.stringify({q:q,a:a.toLowerCase().trim()});
+  await ofSet('sq',d);localStorage.setItem('of_sq',d);
+}
+
+// ── FOLDER PICKER ──
+var _fpBlob=null,_fpFname=null;
+function openFP(title,sub,blob,name){_fpBlob=blob;_fpFname=name;document.getElementById('fpModalTitle').textContent=title||'📁 Save?';document.getElementById('fpModalSub').textContent=sub||'';document.getElementById('fpModal').style.display='flex';}
+function closeFP(){document.getElementById('fpModal').style.display='none';_fpBlob=null;_fpFname=null;}
+function fpAction(t){var b=_fpBlob,n=_fpFname;closeFP();if(!b)return;if(t==='sh'){var f=new File([b],n,{type:b.type});if(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:'FGI Order'}).catch(function(){_dlB(b,n);});return;}}_dlB(b,n);}
+function _dlB(b,n){var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(u);},2000);}
+
 // ── PASSWORD LOCK ──
-// ══════════════════════════════════════════
-var DEFAULT_PASSWORD = 'fgi2025';
-var APP_PASSWORD = localStorage.getItem('fgi_password') || DEFAULT_PASSWORD;
-
-function checkPassword() {
-  var val = document.getElementById('lock-input').value;
-  var err = document.getElementById('lock-error');
-  if (val === APP_PASSWORD) {
-    var ls = document.getElementById('lock-screen');
-    ls.style.transition = 'opacity .4s';
-    ls.style.opacity = '0';
-    setTimeout(function() { ls.style.display = 'none'; }, 400);
-    err.textContent = '';
+function checkPassword(){
+  var val=document.getElementById('lock-input').value;
+  var err=document.getElementById('lock-error');
+  if(val===APP_PASSWORD){
+    var ls=document.getElementById('lock-screen');
+    ls.style.transition='opacity .4s';ls.style.opacity='0';
+    setTimeout(function(){ls.style.display='none';},400);
+    err.textContent='';
   } else {
-    err.textContent = '❌ Galat password — dobara koshish karein';
-    document.getElementById('lock-input').value = '';
-    document.getElementById('lock-input').style.borderColor = 'rgba(255,100,100,.7)';
-    setTimeout(function() {
-      document.getElementById('lock-input').style.borderColor = 'rgba(255,255,255,.15)';
-    }, 1500);
+    err.textContent='❌ Galat password — dobara koshish karein';
+    document.getElementById('lock-input').value='';
+    document.getElementById('lock-input').style.borderColor='rgba(255,100,100,.7)';
+    setTimeout(function(){document.getElementById('lock-input').style.borderColor='rgba(255,255,255,.15)';},1500);
   }
 }
 
-function showChangePanel() {
-  document.getElementById('lock-panel').style.display = 'none';
-  document.getElementById('change-panel').style.display = 'block';
-  document.getElementById('old-pass').value = '';
-  document.getElementById('new-pass').value = '';
-  document.getElementById('confirm-pass').value = '';
-  document.getElementById('change-error').textContent = '';
-  setTimeout(function() { document.getElementById('old-pass').focus(); }, 100);
+function showChangePanel(){
+  document.getElementById('lock-panel').style.display='none';
+  document.getElementById('change-panel').style.display='block';
+  document.getElementById('forgot-panel').style.display='none';
+  ['old-pass','new-pass','confirm-pass'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('change-error').textContent='';
+  setTimeout(function(){document.getElementById('old-pass').focus();},100);
 }
 
-function showLockPanel() {
-  document.getElementById('change-panel').style.display = 'none';
-  document.getElementById('lock-panel').style.display = 'block';
-  document.getElementById('lock-input').value = '';
-  document.getElementById('lock-error').textContent = '';
-  setTimeout(function() { document.getElementById('lock-input').focus(); }, 100);
+function showLockPanel(){
+  document.getElementById('change-panel').style.display='none';
+  document.getElementById('forgot-panel').style.display='none';
+  document.getElementById('lock-panel').style.display='flex';
+  document.getElementById('lock-input').value='';
+  document.getElementById('lock-error').textContent='';
+  setTimeout(function(){document.getElementById('lock-input').focus();},100);
 }
 
-function doChangePassword() {
-  var oldVal = document.getElementById('old-pass').value;
-  var newVal = document.getElementById('new-pass').value;
-  var confVal = document.getElementById('confirm-pass').value;
-  var err = document.getElementById('change-error');
-
-  if (oldVal !== APP_PASSWORD) {
-    err.textContent = '❌ Purana password galat hai!';
-    document.getElementById('old-pass').value = '';
-    return;
-  }
-  if (newVal.length < 4) {
-    err.textContent = '⚠️ Naya password kam az kam 4 characters ka hona chahiye!';
-    return;
-  }
-  if (newVal !== confVal) {
-    err.textContent = '❌ Naya password aur confirm password match nahi karte!';
-    document.getElementById('confirm-pass').value = '';
-    return;
-  }
-  APP_PASSWORD = newVal;
-  localStorage.setItem('fgi_password', newVal);
-  err.style.color = '#6bffb0';
-  err.textContent = '✅ Password successfully change ho gaya!';
-  setTimeout(function() {
-    err.style.color = '#ff6b6b';
-    showLockPanel();
-  }, 1800);
+async function doChangePassword(){
+  var oldVal=document.getElementById('old-pass').value;
+  var newVal=document.getElementById('new-pass').value;
+  var confVal=document.getElementById('confirm-pass').value;
+  var err=document.getElementById('change-error');
+  if(oldVal!==APP_PASSWORD){err.textContent='❌ Purana password galat hai!';document.getElementById('old-pass').value='';return;}
+  if(newVal.length<4){err.textContent='⚠️ Kam az kam 4 characters!';return;}
+  if(newVal!==confVal){err.textContent='❌ Passwords match nahi karte!';document.getElementById('confirm-pass').value='';return;}
+  await savePassword(newVal);
+  err.style.color='#6bffb0';err.textContent='✅ Password change ho gaya!';
+  setTimeout(function(){err.style.color='#ff6b6b';showLockPanel();},1800);
 }
 
-// Auto-focus password field on load
-window.addEventListener('load', function() {
-  setTimeout(function() {
-    var inp = document.getElementById('lock-input');
-    if (inp) inp.focus();
-  }, 300);
-
-  // Register PWA Service Worker
-  if ('serviceWorker' in navigator) {
-    var swCode = `
-const CACHE = 'fgi-order-v4';
-const ASSETS = [self.location.pathname];
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
-  self.skipWaiting();
-});
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys => Promise.all(
-    keys.filter(k => k !== CACHE).map(k => caches.delete(k))
-  )));
-  self.clients.claim();
-});
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request).catch(() => caches.match(e.request)))
-  );
-});`;
-    try {
-      var blob = new Blob([swCode], { type: 'application/javascript' });
-      var swUrl = URL.createObjectURL(blob);
-      navigator.serviceWorker.register(swUrl, { scope: './' })
-        .then(function() { console.log('FGI PWA: Service Worker registered ✓'); })
-        .catch(function(e) { console.log('SW reg failed:', e); });
-    } catch(e) { console.log('SW blob failed:', e); }
-  }
-});
-
-// ══════════════════════════════════════════
-// ── INDEXEDDB SETUP ──
-// ══════════════════════════════════════════
-var DB_NAME = 'FGI_OrderDB';
-var DB_VERSION = 1;
-var STORE_NAME = 'orders';
-var db = null;
-
-function openDB(callback) {
-  if (db) { callback(db); return; }
-  var req = indexedDB.open(DB_NAME, DB_VERSION);
-  req.onupgradeneeded = function(e) {
-    var d = e.target.result;
-    if (!d.objectStoreNames.contains(STORE_NAME)) {
-      var store = d.createObjectStore(STORE_NAME, { keyPath: 'id' });
-      store.createIndex('clientName', 'clientName', { unique: false });
-      store.createIndex('orderDate', 'orderDate', { unique: false });
-    }
-  };
-  req.onsuccess = function(e) {
-    db = e.target.result;
-    callback(db);
-  };
-  req.onerror = function() {
-    toast('❌ Database error — localStorage fallback use ho raha hai');
-    db = null;
-    callback(null);
-  };
+async function showForgotPanel(){
+  var d=await getSQ();
+  if(!d){toast('Settings mein Secret Question pehle set karein!');return;}
+  document.getElementById('lock-panel').style.display='none';
+  document.getElementById('forgot-panel').style.display='block';
+  document.getElementById('forgot-q').textContent='❓ '+d.q;
+  document.getElementById('forgot-ans').value='';
+  document.getElementById('forgot-err').textContent='';
 }
 
-function dbGetAll(callback) {
-  openDB(function(d) {
-    if (!d) {
-      // Fallback to localStorage
-      callback(JSON.parse(localStorage.getItem('fgi_orders') || '[]'));
-      return;
-    }
-    var tx = d.transaction(STORE_NAME, 'readonly');
-    var store = tx.objectStore(STORE_NAME);
-    var req = store.getAll();
-    req.onsuccess = function() { callback(req.result || []); };
-    req.onerror = function() { callback([]); };
-  });
+async function verifyForgotPass(){
+  var d=await getSQ();var a=document.getElementById('forgot-ans').value.trim().toLowerCase();var el=document.getElementById('forgot-err');
+  if(!a){el.textContent='Jawab likhein!';return;}if(!d){el.textContent='Question nahi mila!';return;}
+  if(a===d.a||d.a.includes(a)||a.includes(d.a)){
+    el.style.color='#6bffb0';el.textContent='✅ Sahi jawab!';
+    setTimeout(function(){showLockPanel();showChangePanel();toast('Naya password set karein!');},800);
+  } else {el.style.color='#ff6b6b';el.textContent='❌ Galat jawab!';}
 }
 
-function dbPut(order, callback) {
-  openDB(function(d) {
-    if (!d) {
-      // Fallback localStorage
-      var arr = JSON.parse(localStorage.getItem('fgi_orders') || '[]');
-      var idx = arr.findIndex(function(o) { return o.id === order.id; });
-      if (idx > -1) arr[idx] = order; else arr.push(order);
-      localStorage.setItem('fgi_orders', JSON.stringify(arr));
-      if (callback) callback();
-      return;
-    }
-    var tx = d.transaction(STORE_NAME, 'readwrite');
-    var store = tx.objectStore(STORE_NAME);
-    store.put(order);
-    tx.oncomplete = function() { if (callback) callback(); };
-    tx.onerror = function() { if (callback) callback(); };
-  });
+async function saveSQ(){
+  var q=document.getElementById('sq-select').value;var a=document.getElementById('sq-answer').value.trim();
+  if(!q){toast('Sawal chunein!');return;}if(!a||a.length<2){toast('Jawab likhein!');return;}
+  await saveSQData(q,a);document.getElementById('sq-answer').value='';
+  toast('Secret question save ho gaya ✅');updateSQStatus();
+}
+async function updateSQStatus(){
+  var d=await getSQ();var el=document.getElementById('sq-status');
+  if(el) el.textContent=d?'✅ Set: '+d.q:'⚠️ Set nahi — password recovery ke liye zaroori';
 }
 
-function dbDelete(id, callback) {
-  openDB(function(d) {
-    if (!d) {
-      var arr = JSON.parse(localStorage.getItem('fgi_orders') || '[]');
-      arr = arr.filter(function(o) { return o.id !== id; });
-      localStorage.setItem('fgi_orders', JSON.stringify(arr));
-      if (callback) callback();
-      return;
-    }
-    var tx = d.transaction(STORE_NAME, 'readwrite');
-    var store = tx.objectStore(STORE_NAME);
-    store.delete(id);
-    tx.oncomplete = function() { if (callback) callback(); };
-  });
-}
-
-function dbClear(callback) {
-  openDB(function(d) {
-    if (!d) {
-      localStorage.removeItem('fgi_orders');
-      if (callback) callback();
-      return;
-    }
-    var tx = d.transaction(STORE_NAME, 'readwrite');
-    tx.objectStore(STORE_NAME).clear();
-    tx.oncomplete = function() { if (callback) callback(); };
-  });
-}
-
-function dbPutAll(arr, callback) {
-  openDB(function(d) {
-    if (!d) {
-      localStorage.setItem('fgi_orders', JSON.stringify(arr));
-      if (callback) callback();
-      return;
-    }
-    var tx = d.transaction(STORE_NAME, 'readwrite');
-    var store = tx.objectStore(STORE_NAME);
-    store.clear();
-    arr.forEach(function(o) { store.put(o); });
-    tx.oncomplete = function() { if (callback) callback(); };
-  });
-}
-
-// ══════════════════════════════════════════
-// ── STATE ──
-// ══════════════════════════════════════════
-var orders = []; // in-memory cache
-var curItems = [];
-var editOrderId = null;
-var viewingOrderId = null;
-var currentCustomerName = null;
-var saveTimer = null;
+// ── OFFLINE BAR ──
+(function(){var bar=document.getElementById('offlineBar');function upd(){if(bar)bar.style.display=navigator.onLine?'none':'block';}window.addEventListener('online',upd);window.addEventListener('offline',upd);upd();})();
 
 // ── UTILS ──
-function toast(msg, dur){
-  var t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(function(){t.classList.remove('show');},dur||2200);
-}
-
-function setSaveStatus(state) {
-  // state: 'saved' | 'saving' | 'idle'
-  var dot = document.getElementById('save-dot');
-  var label = document.getElementById('save-label');
-  if (state === 'saved') {
-    dot.className = 'save-dot green';
-    label.textContent = 'Saved ✓';
-  } else if (state === 'saving') {
-    dot.className = 'save-dot orange';
-    label.textContent = 'Saving...';
-  } else {
-    dot.className = 'save-dot';
-    label.textContent = 'DB Ready';
-  }
-}
-
-function saveOrders(afterSave) {
-  // This is now a full sync of orders array to IndexedDB
-  setSaveStatus('saving');
-  dbPutAll(orders, function() {
-    setSaveStatus('saved');
-    // Also mirror to localStorage as backup
-    try { localStorage.setItem('fgi_orders_bk', JSON.stringify(orders)); } catch(e){}
-    if (afterSave) afterSave();
-  });
-}
-
+function toast(msg,dur){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},dur||2200);}
+function setSaveStatus(state){var dot=document.getElementById('save-dot');var label=document.getElementById('save-label');if(state==='saved'){dot.className='save-dot green';label.textContent='Saved ✓';}else if(state==='saving'){dot.className='save-dot orange';label.textContent='Saving...';}else{dot.className='save-dot';label.textContent='DB Ready';}}
 function genId(){return 'ORD'+Date.now();}
-function nextOrderNo(){
-  if(!orders.length) return 'FGI-001';
-  var nums=orders.map(function(o){
-    var m=(o.orderNo||'').match(/(\d+)$/);
-    return m?parseInt(m[1]):0;
-  });
-  var max=Math.max.apply(null,nums);
-  return 'FGI-'+(max+1).toString().padStart(3,'0');
-}
+function nextOrderNo(){if(!orders.length)return 'FGI-001';var nums=orders.map(function(o){var m=(o.orderNo||'').match(/(\d+)$/);return m?parseInt(m[1]):0;});var max=Math.max.apply(null,nums);return 'FGI-'+(max+1).toString().padStart(3,'0');}
 function today(){return new Date().toISOString().split('T')[0];}
-function fmt(d){if(!d)return '—';var p=d.split('-');return p[2]+'/'+p[1]+'/'+p[1+1];}
 function fmtDate(d){if(!d)return '—';var p=d.split('-');return p[2]+'-'+p[1]+'-'+p[0];}
 
-// ══════════════════════════════════════════
+// ── INDEXEDDB FOR ORDERS ──
+var DB_NAME='FGI_OrderDB',DB_VERSION=1,STORE_NAME='orders',db=null;
+function openDB(callback){if(db){callback(db);return;}var req=indexedDB.open(DB_NAME,DB_VERSION);req.onupgradeneeded=function(e){var d=e.target.result;if(!d.objectStoreNames.contains(STORE_NAME)){var store=d.createObjectStore(STORE_NAME,{keyPath:'id'});store.createIndex('clientName','clientName',{unique:false});store.createIndex('orderDate','orderDate',{unique:false});}};req.onsuccess=function(e){db=e.target.result;callback(db);};req.onerror=function(){db=null;callback(null);};}
+function dbGetAll(callback){openDB(function(d){if(!d){callback(JSON.parse(localStorage.getItem('fgi_orders')||'[]'));return;}var tx=d.transaction(STORE_NAME,'readonly');var store=tx.objectStore(STORE_NAME);var req=store.getAll();req.onsuccess=function(){callback(req.result||[]);};req.onerror=function(){callback([]);}; });}
+function dbPutAll(arr,callback){openDB(function(d){if(!d){localStorage.setItem('fgi_orders',JSON.stringify(arr));if(callback)callback();return;}var tx=d.transaction(STORE_NAME,'readwrite');var store=tx.objectStore(STORE_NAME);store.clear();arr.forEach(function(o){store.put(o);});tx.oncomplete=function(){if(callback)callback();};});}
+
+// ── STATE ──
+var orders=[],curItems=[],editOrderId=null,viewingOrderId=null,currentCustomerName=null;
+
+function saveOrders(afterSave){setSaveStatus('saving');dbPutAll(orders,function(){setSaveStatus('saved');try{localStorage.setItem('fgi_orders_bk',JSON.stringify(orders));}catch(e){}if(afterSave)afterSave();});}
+
 // ── VIEWS ──
-// ══════════════════════════════════════════
 function showView(v){
   document.querySelectorAll('.view').forEach(function(el){el.classList.remove('active');});
   document.querySelectorAll('.bb-btn').forEach(function(el){el.classList.remove('active');});
-  if(v==='list'){
-    document.getElementById('view-list').classList.add('active');
-    document.getElementById('bb-list').classList.add('active');
-    document.getElementById('nav-title').textContent='All Orders';
-    renderOrderList();
-  } else if(v==='new-order'){
-    document.getElementById('view-new-order').classList.add('active');
-    document.getElementById('bb-new').classList.add('active');
-    document.getElementById('nav-title').textContent=editOrderId?'Edit Order':'New Order';
-    if(!editOrderId){
-      document.getElementById('order-no').value=nextOrderNo();
-    }
-  } else if(v==='detail'){
-    document.getElementById('view-detail').classList.add('active');
-    document.getElementById('nav-title').textContent='Order Detail';
-  } else if(v==='report'){
-    document.getElementById('view-report').classList.add('active');
-    document.getElementById('bb-report').classList.add('active');
-    document.getElementById('nav-title').textContent='Customer Report';
-    renderReport();
-  } else if(v==='customer'){
-    document.getElementById('view-customer').classList.add('active');
-    document.getElementById('nav-title').textContent='Customer Orders';
-    renderCustomerOrders();
-  }
+  if(v==='list'){document.getElementById('view-list').classList.add('active');document.getElementById('bb-list').classList.add('active');document.getElementById('nav-title').textContent='All Orders';renderOrderList();}
+  else if(v==='new-order'){document.getElementById('view-new-order').classList.add('active');document.getElementById('bb-new').classList.add('active');document.getElementById('nav-title').textContent=editOrderId?'Edit Order':'New Order';if(!editOrderId){document.getElementById('order-no').value=nextOrderNo();}}
+  else if(v==='detail'){document.getElementById('view-detail').classList.add('active');document.getElementById('nav-title').textContent='Order Detail';}
+  else if(v==='report'){document.getElementById('view-report').classList.add('active');document.getElementById('bb-report').classList.add('active');document.getElementById('nav-title').textContent='Customer Report';renderReport();}
+  else if(v==='customer'){document.getElementById('view-customer').classList.add('active');document.getElementById('nav-title').textContent='Customer Orders';renderCustomerOrders();}
 }
 
-// ══════════════════════════════════════════
 // ── ORDER LIST ──
-// ══════════════════════════════════════════
-function renderOrderList(){
-  var c=document.getElementById('order-list-container');
-  var q=(document.getElementById('search-input').value||'').toLowerCase().trim();
-  var filtered=orders.filter(function(o){
-    if(!q) return true;
-    return (o.clientName||'').toLowerCase().includes(q)||(o.orderNo||'').toLowerCase().includes(q);
-  });
-  if(!filtered.length){
-    c.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div style="font-size:15px;font-weight:700;color:#1b2d42;margin-bottom:6px;">'+(q?'Koi Match Nahi':'Koi Order Nahi')+'</div><div style="font-size:13px;">'+(q?'Search change karo':'New Order button se pehla order banao')+'</div></div>';
-    return;
-  }
-  // Sort newest first
-  var sorted=[].concat(filtered).sort(function(a,b){return b.created-a.created;});
-  var html='';
-  sorted.forEach(function(o){
-    html+='<div class="order-item" onclick="openOrderDetail(\''+o.id+'\')">';
-    html+='<div class="order-item-top">';
-    html+='<div><div class="order-name">'+o.clientName+'</div>';
-    if(o.orderNo) html+='<div style="font-size:11px;font-weight:700;color:var(--gold);margin-top:2px;">'+o.orderNo+'</div>';
-    html+='</div>';
-    html+='<span class="order-badge '+(o.done?'badge-done':'badge-pending')+'">'+(o.done?'✅ Done':'⏳ Pending')+'</span>';
-    html+='</div>';
-    html+='<div class="order-meta">';
-    html+='<span>📍 '+(o.clientCity||'—')+'</span>';
-    html+='<span>📅 '+fmtDate(o.orderDate)+'</span>';
-    if(o.deliveryDate) html+='<span>🚚 '+fmtDate(o.deliveryDate)+'</span>';
-    html+='</div>';
-    html+='<div class="order-meta" style="margin-top:4px;color:#0d1b2a;font-weight:600;">'+o.items.length+' item'+(o.items.length!==1?'s':'')+'</div>';
-    html+='</div>';
-  });
-  c.innerHTML=html;
-}
+function renderOrderList(){var c=document.getElementById('order-list-container');var q=(document.getElementById('search-input').value||'').toLowerCase().trim();var filtered=orders.filter(function(o){if(!q)return true;return(o.clientName||'').toLowerCase().includes(q)||(o.orderNo||'').toLowerCase().includes(q);});if(!filtered.length){c.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div style="font-size:15px;font-weight:700;color:#1b2d42;margin-bottom:6px;">'+(q?'Koi Match Nahi':'Koi Order Nahi')+'</div><div style="font-size:13px;">'+(q?'Search change karo':'New Order button se pehla order banao')+'</div></div>';return;}var sorted=[].concat(filtered).sort(function(a,b){return b.created-a.created;});var html='';sorted.forEach(function(o){html+='<div class="order-item" onclick="openOrderDetail(\''+o.id+'\')">';html+='<div class="order-item-top"><div><div class="order-name">'+o.clientName+'</div>';if(o.orderNo)html+='<div style="font-size:11px;font-weight:700;color:var(--gold);margin-top:2px;">'+o.orderNo+'</div>';html+='</div>';html+='<span class="order-badge '+(o.done?'badge-done':'badge-pending')+'">'+(o.done?'✅ Done':'⏳ Pending')+'</span></div>';html+='<div class="order-meta"><span>📍 '+(o.clientCity||'—')+'</span><span>📅 '+fmtDate(o.orderDate)+'</span>'+(o.deliveryDate?'<span>🚚 '+fmtDate(o.deliveryDate)+'</span>':'')+'</div>';html+='<div class="order-meta" style="margin-top:4px;color:#0d1b2a;font-weight:600;">'+o.items.length+' item'+(o.items.length!==1?'s':'')+'</div></div>';});c.innerHTML=html;}
 
-// ══════════════════════════════════════════
-// ── REPORT CARD ──
-// ══════════════════════════════════════════
-function renderReport() {
-  var c = document.getElementById('report-container');
-  var q = (document.getElementById('report-search').value || '').toLowerCase().trim();
+// ── REPORT ──
+function renderReport(){var c=document.getElementById('report-container');var q=(document.getElementById('report-search').value||'').toLowerCase().trim();if(!orders.length){c.innerHTML='<div class="empty"><div class="empty-icon">👥</div><div style="font-size:15px;font-weight:700;">Koi Customer Nahi</div></div>';return;}var customers={};orders.forEach(function(o){var name=o.clientName||'Unknown';if(!customers[name])customers[name]={name:name,city:o.clientCity||'',orders:[],done:0,pending:0};customers[name].orders.push(o);if(o.done)customers[name].done++;else customers[name].pending++;});var list=Object.values(customers).filter(function(c){return!q||c.name.toLowerCase().includes(q);});list.sort(function(a,b){return b.orders.length-a.orders.length;});if(!list.length){c.innerHTML='<div class="empty">Koi match nahi</div>';return;}var html='<div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:10px;">'+list.length+' customer(s)</div>';list.forEach(function(cust){html+='<div class="customer-card" onclick="openCustomerReport(\''+cust.name.replace(/'/g,"\\'")+'\')"><div style="display:flex;justify-content:space-between;align-items:flex-start;"><div><div class="customer-card-name">'+cust.name+'</div>'+(cust.city?'<div class="customer-card-meta">📍 '+cust.city+'</div>':'')+'</div><div style="text-align:right;font-size:22px;font-weight:900;font-family:Barlow Condensed,sans-serif;color:var(--navy);">'+cust.orders.length+'<span style="font-size:10px;font-weight:700;color:var(--text2);display:block;margin-top:-2px;">orders</span></div></div><div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap;"><span class="cust-badge cust-badge-total">Total: '+cust.orders.length+'</span>'+(cust.done?'<span class="cust-badge cust-badge-done">✅ Done: '+cust.done+'</span>':'')+(cust.pending?'<span class="cust-badge cust-badge-pending">⏳ Pending: '+cust.pending+'</span>':'')+'</div></div>';});c.innerHTML=html;}
 
-  if (!orders.length) {
-    c.innerHTML = '<div class="empty"><div class="empty-icon">👥</div><div style="font-size:15px;font-weight:700;color:#1b2d42;margin-bottom:6px;">Koi Customer Nahi</div><div style="font-size:13px;">Pehle orders banao</div></div>';
-    return;
-  }
+function openCustomerReport(name){currentCustomerName=name;renderCustomerOrders();showView('customer');}
+function renderCustomerOrders(){var name=currentCustomerName;var custOrders=orders.filter(function(o){return o.clientName===name;});custOrders.sort(function(a,b){return b.created-a.created;});var done=custOrders.filter(function(o){return o.done;}).length;var pending=custOrders.length-done;document.getElementById('customer-header').innerHTML='<div class="card" style="margin-bottom:12px;"><div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:4px;">'+name+'</div>'+(custOrders[0]&&custOrders[0].clientCity?'<div style="font-size:12px;color:var(--text2);margin-bottom:8px;">📍 '+custOrders[0].clientCity+'</div>':'')+'<div style="display:flex;gap:8px;flex-wrap:wrap;"><div style="background:var(--navy);color:var(--gold);padding:6px 14px;border-radius:7px;font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:800;">Total: '+custOrders.length+'</div><div style="background:#d4edda;color:#155724;padding:6px 14px;border-radius:7px;font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:800;">✅ Done: '+done+'</div><div style="background:#fff3cd;color:#856404;padding:6px 14px;border-radius:7px;font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:800;">⏳ Pending: '+pending+'</div></div></div>';var c=document.getElementById('customer-orders-container');if(!custOrders.length){c.innerHTML='<div class="empty">Koi order nahi</div>';return;}var html='';custOrders.forEach(function(o){html+='<div class="report-order-item" onclick="openOrderDetailFromReport(\''+o.id+'\')"><div style="display:flex;justify-content:space-between;align-items:flex-start;"><div><div style="font-size:14px;font-weight:800;color:var(--navy);">'+(o.orderNo||'—')+'</div><div style="font-size:11px;color:var(--text2);margin-top:3px;">📅 '+fmtDate(o.orderDate)+(o.deliveryDate?' → 🚚 '+fmtDate(o.deliveryDate):'')+'</div><div style="font-size:11px;font-weight:600;margin-top:3px;">'+o.items.length+' items</div>'+(o.notes?'<div style="font-size:10px;color:#888;margin-top:2px;">📝 '+o.notes+'</div>':'')+'</div><span class="order-badge '+(o.done?'badge-done':'badge-pending')+'">'+(o.done?'✅ Done':'⏳ Pending')+'</span></div></div>';});c.innerHTML=html;}
 
-  // Group by clientName
-  var customers = {};
-  orders.forEach(function(o) {
-    var name = o.clientName || 'Unknown';
-    if (!customers[name]) {
-      customers[name] = { name: name, city: o.clientCity || '', orders: [], done: 0, pending: 0 };
-    }
-    customers[name].orders.push(o);
-    if (o.done) customers[name].done++;
-    else customers[name].pending++;
-  });
+function openOrderDetailFromReport(id){viewingOrderId=id;document.getElementById('detail-back-btn').onclick=function(){showView('customer');};openOrderDetail(id);document.querySelectorAll('.view').forEach(function(el){el.classList.remove('active');});document.getElementById('view-detail').classList.add('active');document.getElementById('nav-title').textContent='Order Detail';}
 
-  // Filter
-  var list = Object.values(customers).filter(function(c) {
-    return !q || c.name.toLowerCase().includes(q);
-  });
-
-  // Sort by most orders
-  list.sort(function(a, b) { return b.orders.length - a.orders.length; });
-
-  if (!list.length) {
-    c.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div style="font-size:13px;">Koi match nahi mila</div></div>';
-    return;
-  }
-
-  var html = '<div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:10px;">'+list.length+' customer(s) — click karo detail dekhne ke liye</div>';
-  list.forEach(function(cust) {
-    html += '<div class="customer-card" onclick="openCustomerReport(\''+cust.name.replace(/'/g,"\\'")+'\')">';
-    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;">';
-    html += '<div><div class="customer-card-name">'+cust.name+'</div>';
-    if (cust.city) html += '<div class="customer-card-meta">📍 '+cust.city+'</div>';
-    html += '</div>';
-    html += '<div style="text-align:right;font-size:22px;font-weight:900;font-family:Barlow Condensed,sans-serif;color:var(--navy);">'+cust.orders.length+'<span style="font-size:10px;font-weight:700;color:var(--text2);display:block;margin-top:-2px;">orders</span></div>';
-    html += '</div>';
-    html += '<div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap;">';
-    html += '<span class="cust-badge cust-badge-total">Total: '+cust.orders.length+'</span>';
-    if (cust.done) html += '<span class="cust-badge cust-badge-done">✅ Done: '+cust.done+'</span>';
-    if (cust.pending) html += '<span class="cust-badge cust-badge-pending">⏳ Pending: '+cust.pending+'</span>';
-    html += '</div>';
-    html += '</div>';
-  });
-  c.innerHTML = html;
-}
-
-function openCustomerReport(name) {
-  currentCustomerName = name;
-  renderCustomerOrders();
-  showView('customer');
-}
-
-function renderCustomerOrders() {
-  var name = currentCustomerName;
-  var custOrders = orders.filter(function(o) { return o.clientName === name; });
-  custOrders.sort(function(a, b) { return b.created - a.created; });
-
-  var done = custOrders.filter(function(o) { return o.done; }).length;
-  var pending = custOrders.length - done;
-
-  // Header
-  var hdr = document.getElementById('customer-header');
-  hdr.innerHTML = '<div class="card" style="margin-bottom:12px;">' +
-    '<div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:4px;">'+name+'</div>' +
-    (custOrders[0] && custOrders[0].clientCity ? '<div style="font-size:12px;color:var(--text2);margin-bottom:8px;">📍 '+custOrders[0].clientCity+'</div>' : '') +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-    '<div style="background:var(--navy);color:var(--gold);padding:6px 14px;border-radius:7px;font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:800;">Total: '+custOrders.length+'</div>' +
-    '<div style="background:#d4edda;color:#155724;padding:6px 14px;border-radius:7px;font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:800;">✅ Done: '+done+'</div>' +
-    '<div style="background:#fff3cd;color:#856404;padding:6px 14px;border-radius:7px;font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:800;">⏳ Pending: '+pending+'</div>' +
-    '</div>' +
-    '</div>';
-
-  // Orders list
-  var c = document.getElementById('customer-orders-container');
-  if (!custOrders.length) {
-    c.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div>Koi order nahi</div></div>';
-    return;
-  }
-
-  var html = '<div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px;">Kisi b order pe click karo detail dekhne ke liye ↓</div>';
-  custOrders.forEach(function(o) {
-    html += '<div class="report-order-item" onclick="openOrderDetailFromReport(\''+o.id+'\')">';
-    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;">';
-    html += '<div>';
-    html += '<div style="font-size:14px;font-weight:800;color:var(--navy);">'+(o.orderNo||'—')+'</div>';
-    html += '<div style="font-size:11px;color:var(--text2);margin-top:3px;">📅 '+fmtDate(o.orderDate)+(o.deliveryDate?' &nbsp;→&nbsp; 🚚 '+fmtDate(o.deliveryDate):'')+'</div>';
-    html += '<div style="font-size:11px;color:var(--text);margin-top:3px;font-weight:600;">'+o.items.length+' item'+(o.items.length!==1?'s':'')+'</div>';
-    if (o.notes) html += '<div style="font-size:10px;color:#888;margin-top:2px;">📝 '+o.notes+'</div>';
-    html += '</div>';
-    html += '<span class="order-badge '+(o.done?'badge-done':'badge-pending')+'" style="white-space:nowrap;">'+(o.done?'✅ Done':'⏳ Pending')+'</span>';
-    html += '</div>';
-    html += '</div>';
-  });
-  c.innerHTML = html;
-}
-
-function openOrderDetailFromReport(id) {
-  viewingOrderId = id;
-  // Change back button to go back to customer view
-  document.getElementById('detail-back-btn').onclick = function() {
-    showView('customer');
-  };
-  openOrderDetail(id);
-  document.getElementById('view-detail').classList.add('active');
-  document.querySelectorAll('.view').forEach(function(el) {
-    if (el.id !== 'view-detail') el.classList.remove('active');
-  });
-  document.getElementById('nav-title').textContent = 'Order Detail';
-}
-
-// ══════════════════════════════════════════
 // ── ADD ITEM ──
-// ══════════════════════════════════════════
-var editingItemIndex = null;
+var editingItemIndex=null;
+function addOrderItem(){var code=document.getElementById('item-code').value.trim().toUpperCase();var desc=document.getElementById('item-desc').value.trim();var qty=parseFloat(document.getElementById('item-qty').value);var unit=document.getElementById('item-unit').value.trim();if(!desc){toast('⚠️ Description zaroori hai!');document.getElementById('item-desc').focus();return;}if(isNaN(qty)||qty<=0){toast('⚠️ Qty enter karo!');document.getElementById('item-qty').focus();return;}if(editingItemIndex!==null){curItems[editingItemIndex]={code:code,desc:desc,qty:qty,unit:unit};editingItemIndex=null;document.getElementById('add-item-btn').textContent='＋ Add Item';toast('✅ Item update ho gaya!');}else{curItems.push({code:code,desc:desc,qty:qty,unit:unit});toast('✅ Item add ho gaya!');}['item-code','item-desc','item-qty','item-unit'].forEach(function(id){document.getElementById(id).value='';});document.getElementById('item-desc').focus();renderItemsTable();}
+function editItem(i){var it=curItems[i];document.getElementById('item-code').value=it.code||'';document.getElementById('item-desc').value=it.desc||'';document.getElementById('item-qty').value=it.qty||'';document.getElementById('item-unit').value=it.unit||'';editingItemIndex=i;document.getElementById('add-item-btn').textContent='✔ Update Item';document.getElementById('item-desc').focus();window.scrollTo({top:0,behavior:'smooth'});toast('✏️ Item edit mode');}
+function removeItem(i){curItems.splice(i,1);if(editingItemIndex===i){editingItemIndex=null;document.getElementById('add-item-btn').textContent='＋ Add Item';}renderItemsTable();}
+function renderItemsTable(){var tbody=document.getElementById('order-items-body');if(!curItems.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:14px;color:#aaa;">Koi item nahi — upar se add karo</td></tr>';return;}tbody.innerHTML=curItems.map(function(it,i){return'<tr><td>'+(i+1)+'</td><td style="font-weight:700;color:var(--navy);">'+(it.code||'—')+'</td><td class="left">'+it.desc+'</td><td style="font-weight:700;">'+it.qty+'</td><td style="color:var(--text2);">'+(it.unit||'—')+'</td><td><button class="edit-btn" onclick="editItem('+i+')">✏️</button><button class="del-btn" onclick="removeItem('+i+')">🗑</button></td></tr>';}).join('');}
 
-function addOrderItem(){
-  var code=document.getElementById('item-code').value.trim().toUpperCase();
-  var desc=document.getElementById('item-desc').value.trim();
-  var qty=parseFloat(document.getElementById('item-qty').value);
-  var unit=document.getElementById('item-unit').value.trim();
-  if(!desc){toast('⚠️ Description zaroori hai!');document.getElementById('item-desc').focus();return;}
-  if(isNaN(qty)||qty<=0){toast('⚠️ Qty enter karo!');document.getElementById('item-qty').focus();return;}
-
-  if(editingItemIndex!==null){
-    curItems[editingItemIndex]={code:code,desc:desc,qty:qty,unit:unit};
-    editingItemIndex=null;
-    document.getElementById('add-item-btn').textContent='＋ Add Item';
-    toast('✅ Item update ho gaya!');
-  } else {
-    curItems.push({code:code,desc:desc,qty:qty,unit:unit});
-    toast('✅ Item add ho gaya!');
-  }
-  ['item-code','item-desc','item-qty','item-unit'].forEach(function(id){document.getElementById(id).value='';});
-  document.getElementById('item-desc').focus();
-  renderItemsTable();
-}
-
-function editItem(i){
-  var it=curItems[i];
-  document.getElementById('item-code').value=it.code||'';
-  document.getElementById('item-desc').value=it.desc||'';
-  document.getElementById('item-qty').value=it.qty||'';
-  document.getElementById('item-unit').value=it.unit||'';
-  editingItemIndex=i;
-  document.getElementById('add-item-btn').textContent='✔ Update Item';
-  document.getElementById('item-desc').focus();
-  window.scrollTo({top:0,behavior:'smooth'});
-  toast('✏️ Item edit mode');
-}
-
-function removeItem(i){
-  curItems.splice(i,1);
-  if(editingItemIndex===i){editingItemIndex=null;document.getElementById('add-item-btn').textContent='＋ Add Item';}
-  renderItemsTable();
-}
-
-function renderItemsTable(){
-  var tbody=document.getElementById('order-items-body');
-  if(!curItems.length){
-    tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:14px;color:#aaa;">Koi item nahi — upar se add karo</td></tr>';
-    return;
-  }
-  tbody.innerHTML=curItems.map(function(it,i){
-    return '<tr>'+
-      '<td>'+(i+1)+'</td>'+
-      '<td style="font-weight:700;color:var(--navy);">'+(it.code||'—')+'</td>'+
-      '<td class="left">'+it.desc+'</td>'+
-      '<td style="font-weight:700;">'+it.qty+'</td>'+
-      '<td style="color:var(--text2);">'+(it.unit||'—')+'</td>'+
-      '<td><button class="edit-btn" onclick="editItem('+i+')">✏️</button><button class="del-btn" onclick="removeItem('+i+')">🗑</button></td>'+
-      '</tr>';
-  }).join('');
-}
-
-// ══════════════════════════════════════════
 // ── SAVE ORDER ──
-// ══════════════════════════════════════════
-function saveOrder(){
-  var orderNo=document.getElementById('order-no').value.trim().toUpperCase();
-  var name=document.getElementById('client-name').value.trim();
-  var city=document.getElementById('client-city').value.trim();
-  var mobile=document.getElementById('client-mobile').value.trim();
-  var odate=document.getElementById('order-date').value;
-  var ddate=document.getElementById('delivery-date').value;
-  var notes=document.getElementById('order-notes').value.trim();
+function saveOrder(){var orderNo=document.getElementById('order-no').value.trim().toUpperCase();var name=document.getElementById('client-name').value.trim();var city=document.getElementById('client-city').value.trim();var mobile=document.getElementById('client-mobile').value.trim();var odate=document.getElementById('order-date').value;var ddate=document.getElementById('delivery-date').value;var notes=document.getElementById('order-notes').value.trim();if(!orderNo){toast('⚠️ Order number zaroori hai!');return;}if(!name){toast('⚠️ Client naam zaroori hai!');return;}if(!odate){toast('⚠️ Order date select karo!');return;}if(!curItems.length){toast('⚠️ Kam az kam ek item add karo!');return;}if(editOrderId){var idx=orders.findIndex(function(o){return o.id===editOrderId;});if(idx>-1)orders[idx]={id:editOrderId,orderNo:orderNo,clientName:name,clientCity:city,clientMobile:mobile,orderDate:odate,deliveryDate:ddate,notes:notes,items:curItems.slice(),done:orders[idx].done,created:orders[idx].created,updated:Date.now()};editOrderId=null;}else{orders.push({id:genId(),orderNo:orderNo,clientName:name,clientCity:city,clientMobile:mobile,orderDate:odate,deliveryDate:ddate,notes:notes,items:curItems.slice(),done:false,created:Date.now()});}saveOrders(function(){toast('✅ Order save ho gaya!');resetForm();showView('list');});}
+function resetForm(){['order-no','client-name','client-city','client-mobile','order-date','delivery-date','order-notes','item-code','item-desc','item-qty','item-unit'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});document.getElementById('order-date').value=today();curItems=[];editingItemIndex=null;editOrderId=null;document.getElementById('add-item-btn').textContent='＋ Add Item';renderItemsTable();document.getElementById('save-order-btn').textContent='💾 Save Order';document.getElementById('save-order-btn').style.background='';}
+function cancelOrder(){resetForm();showView('list');}
 
-  if(!orderNo){toast('⚠️ Order number zaroori hai!');document.getElementById('order-no').focus();return;}
-  if(!name){toast('⚠️ Client naam zaroori hai!');document.getElementById('client-name').focus();return;}
-  if(!odate){toast('⚠️ Order date select karo!');document.getElementById('order-date').focus();return;}
-  if(!curItems.length){toast('⚠️ Kam az kam ek item add karo!');return;}
-
-  if(editOrderId){
-    var idx=orders.findIndex(function(o){return o.id===editOrderId;});
-    if(idx>-1){
-      orders[idx]={id:editOrderId,orderNo:orderNo,clientName:name,clientCity:city,clientMobile:mobile,orderDate:odate,deliveryDate:ddate,notes:notes,items:curItems.slice(),done:orders[idx].done,created:orders[idx].created,updated:Date.now()};
-    }
-    editOrderId=null;
-  } else {
-    var order={id:genId(),orderNo:orderNo,clientName:name,clientCity:city,clientMobile:mobile,orderDate:odate,deliveryDate:ddate,notes:notes,items:curItems.slice(),done:false,created:Date.now()};
-    orders.push(order);
-  }
-  saveOrders(function() {
-    toast('✅ Order save ho gaya!');
-    resetForm();
-    showView('list');
-  });
-}
-
-function resetForm(){
-  ['order-no','client-name','client-city','client-mobile','order-date','delivery-date','order-notes','item-code','item-desc','item-qty','item-unit'].forEach(function(id){
-    var el=document.getElementById(id);if(el)el.value='';
-  });
-  document.getElementById('order-date').value=today();
-  curItems=[];editingItemIndex=null;editOrderId=null;
-  document.getElementById('add-item-btn').textContent='＋ Add Item';
-  renderItemsTable();
-  document.getElementById('save-order-btn').textContent='💾 Save Order';
-  document.getElementById('save-order-btn').style.background='';
-}
-
-function cancelOrder(){
-  resetForm();
-  showView('list');
-}
-
-// ══════════════════════════════════════════
 // ── ORDER DETAIL ──
-// ══════════════════════════════════════════
-function openOrderDetail(id){
-  viewingOrderId=id;
-  // Reset back button
-  document.getElementById('detail-back-btn').onclick = function() { showView('list'); };
-  var o=orders.find(function(x){return x.id===id;});
-  if(!o) return;
-  var html='';
-  // Header card
-  html+='<div class="card">';
-  html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">';
-  html+='<div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><div style="font-size:18px;font-weight:800;color:var(--navy);">'+o.clientName+'</div>'+(o.orderNo?'<span style="background:var(--navy);color:var(--gold);font-family:Barlow Condensed,sans-serif;font-size:12px;font-weight:800;padding:2px 9px;border-radius:5px;letter-spacing:.5px;">'+o.orderNo+'</span>':'')+' </div>';
-  if(o.clientCity) html+='<div style="font-size:12px;color:var(--text2);margin-top:2px;">📍 '+o.clientCity+'</div>';
-  if(o.clientMobile) html+='<div style="font-size:12px;color:var(--gold);font-weight:700;margin-top:2px;">📞 '+o.clientMobile+'</div>';
-  html+='</div>';
-  html+='<span class="order-badge '+(o.done?'badge-done':'badge-pending')+'" onclick="toggleDone(\''+o.id+'\')" style="cursor:pointer;">'+(o.done?'✅ Done':'⏳ Pending')+'</span>';
-  html+='</div>';
-  html+='<div style="display:flex;gap:8px;flex-wrap:wrap;">';
-  html+='<div style="background:var(--gray1);border-radius:7px;padding:7px 12px;flex:1;min-width:120px;"><div style="font-size:9px;font-weight:700;color:var(--text2);text-transform:uppercase;margin-bottom:2px;">Order Date</div><div style="font-size:13px;font-weight:700;">'+fmtDate(o.orderDate)+'</div></div>';
-  html+='<div style="background:var(--gray1);border-radius:7px;padding:7px 12px;flex:1;min-width:120px;"><div style="font-size:9px;font-weight:700;color:var(--text2);text-transform:uppercase;margin-bottom:2px;">Delivery Date</div><div style="font-size:13px;font-weight:700;">'+(o.deliveryDate?fmtDate(o.deliveryDate):'—')+'</div></div>';
-  html+='</div>';
-  if(o.notes) html+='<div style="margin-top:10px;background:#fff8e8;border-left:3px solid var(--gold);padding:8px 12px;border-radius:5px;font-size:12px;color:var(--text);">📝 '+o.notes+'</div>';
-  html+='</div>';
+function openOrderDetail(id){viewingOrderId=id;document.getElementById('detail-back-btn').onclick=function(){showView('list');};var o=orders.find(function(x){return x.id===id;});if(!o)return;var html='<div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;"><div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><div style="font-size:18px;font-weight:800;color:var(--navy);">'+o.clientName+'</div>'+(o.orderNo?'<span style="background:var(--navy);color:var(--gold);font-family:Barlow Condensed,sans-serif;font-size:12px;font-weight:800;padding:2px 9px;border-radius:5px;">'+o.orderNo+'</span>':'')+'</div>'+(o.clientCity?'<div style="font-size:12px;color:var(--text2);margin-top:2px;">📍 '+o.clientCity+'</div>':'')+(o.clientMobile?'<div style="font-size:12px;color:var(--gold);font-weight:700;margin-top:2px;">📞 '+o.clientMobile+'</div>':'')+'</div><span class="order-badge '+(o.done?'badge-done':'badge-pending')+'" onclick="toggleDone(\''+o.id+'\')" style="cursor:pointer;">'+(o.done?'✅ Done':'⏳ Pending')+'</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;"><div style="background:var(--gray1);border-radius:7px;padding:7px 12px;flex:1;min-width:120px;"><div style="font-size:9px;font-weight:700;color:var(--text2);text-transform:uppercase;margin-bottom:2px;">Order Date</div><div style="font-size:13px;font-weight:700;">'+fmtDate(o.orderDate)+'</div></div><div style="background:var(--gray1);border-radius:7px;padding:7px 12px;flex:1;min-width:120px;"><div style="font-size:9px;font-weight:700;color:var(--text2);text-transform:uppercase;margin-bottom:2px;">Delivery Date</div><div style="font-size:13px;font-weight:700;">'+(o.deliveryDate?fmtDate(o.deliveryDate):'—')+'</div></div></div>'+(o.notes?'<div style="margin-top:10px;background:#fff8e8;border-left:3px solid var(--gold);padding:8px 12px;border-radius:5px;font-size:12px;">📝 '+o.notes+'</div>':'')+'</div><div class="card"><div class="card-title">📦 Items ('+o.items.length+')</div><table class="items-table"><thead><tr><th>#</th><th>Code</th><th class="left">Description</th><th>Qty</th><th>Unit</th></tr></thead><tbody>'+o.items.map(function(it,i){return'<tr><td>'+(i+1)+'</td><td style="font-weight:700;color:var(--navy);">'+(it.code||'—')+'</td><td class="left">'+it.desc+'</td><td style="font-weight:700;">'+it.qty+'</td><td>'+(it.unit||'—')+'</td></tr>';}).join('')+'</tbody></table></div>';document.getElementById('detail-container').innerHTML=html;showView('detail');}
+function toggleDone(id){var o=orders.find(function(x){return x.id===id;});if(!o)return;o.done=!o.done;saveOrders(function(){openOrderDetail(id);toast(o.done?'✅ Order complete!':'⏳ Pending mark ho gaya!');});}
+function editCurrentOrder(){var o=orders.find(function(x){return x.id===viewingOrderId;});if(!o)return;editOrderId=o.id;document.getElementById('order-no').value=o.orderNo||'';document.getElementById('client-name').value=o.clientName||'';document.getElementById('client-city').value=o.clientCity||'';document.getElementById('client-mobile').value=o.clientMobile||'';document.getElementById('order-date').value=o.orderDate||'';document.getElementById('delivery-date').value=o.deliveryDate||'';document.getElementById('order-notes').value=o.notes||'';curItems=o.items.slice();renderItemsTable();document.getElementById('save-order-btn').textContent='💾 Update Order';document.getElementById('save-order-btn').style.background='var(--navy2)';showView('new-order');}
+function deleteCurrentOrder(){if(!viewingOrderId)return;if(!confirm('Yeh order delete karna chahte ho?'))return;orders=orders.filter(function(o){return o.id!==viewingOrderId;});saveOrders(function(){toast('🗑 Order delete ho gaya!');showView('list');});}
 
-  // Items
-  html+='<div class="card">';
-  html+='<div class="card-title">📦 Items ('+o.items.length+')</div>';
-  html+='<table class="items-table"><thead><tr><th>#</th><th>Code</th><th class="left">Description</th><th>Qty</th><th>Unit</th></tr></thead><tbody>';
-  o.items.forEach(function(it,i){
-    html+='<tr><td>'+(i+1)+'</td><td style="font-weight:700;color:var(--navy);">'+(it.code||'—')+'</td><td class="left">'+it.desc+'</td><td style="font-weight:700;">'+it.qty+'</td><td>'+(it.unit||'—')+'</td></tr>';
-  });
-  html+='</tbody></table>';
-  html+='</div>';
+// ── EXPORT / IMPORT — Folder Picker ──
+function openDataModal(){updateSQStatus();document.getElementById('data-modal').classList.add('open');}
+function closeDataModal(){document.getElementById('data-modal').classList.remove('open');}
+function exportData(){var now=new Date();var stamp=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');var payload={version:2,exported:now.toISOString(),totalOrders:orders.length,orders:orders};var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});openFP('💾 Backup Save?','JSON backup file',blob,'FGI_Orders_Backup_'+stamp+'.json');closeDataModal();}
+function importData(event){var file=event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){try{var data=JSON.parse(e.target.result);var imported=Array.isArray(data)?data:(data.orders&&Array.isArray(data.orders))?data.orders:null;if(!imported){toast('❌ File format sahi nahi!');return;}if(!confirm('Import karne se '+orders.length+' purane orders replace ho jayen ge. '+imported.length+' naye orders ayen ge. Pakka?')){event.target.value='';return;}orders=imported;saveOrders(function(){toast('✅ '+imported.length+' orders import ho gaye!');renderOrderList();closeDataModal();});}catch(err){toast('❌ File parse error!');}event.target.value='';};reader.readAsText(file);}
 
-  document.getElementById('detail-container').innerHTML=html;
-  showView('detail');
-}
+// ── IMAGE GENERATION — Folder Picker ──
+function generateOrderImage(){var o=orders.find(function(x){return x.id===viewingOrderId;});if(!o){toast('⚠️ Order nahi mila');return;}toast('📸 Image ban rahi hai...',4000);var wrap=document.getElementById('img-render-wrap');wrap.innerHTML=buildOrderImageHTML(o);wrap.style.left='-9999px';setTimeout(function(){if(typeof html2canvas==='undefined'){toast('❌ Library load nahi hui');return;}html2canvas(wrap,{scale:3,useCORS:true,backgroundColor:'#ffffff',width:420,scrollX:0,scrollY:0,logging:false}).then(function(canvas){var fname='FGI_Order_'+o.clientName.replace(/\s+/g,'_')+'_'+o.orderDate+'.png';canvas.toBlob(function(blob){openFP('📸 Image Save?','Kahan save karein?',blob,fname);});}).catch(function(e){toast('❌ Error: '+e.message);});},400);}
 
-function toggleDone(id){
-  var o=orders.find(function(x){return x.id===id;});
-  if(!o) return;
-  o.done=!o.done;
-  saveOrders(function() {
-    openOrderDetail(id);
-    toast(o.done?'✅ Order complete mark ho gaya!':'⏳ Pending mark ho gaya!');
-  });
-}
+function buildOrderImageHTML(o){var tdS='padding:9px 7px;font-size:12px;border-bottom:1px solid #edf0f5;color:#222;';var thC='padding:9px 6px;font-size:10px;font-weight:800;color:#f7d96a;text-transform:uppercase;letter-spacing:.5px;background:#1a4a8c;text-align:center;';var thL='padding:9px 6px;font-size:10px;font-weight:800;color:#f7d96a;text-transform:uppercase;letter-spacing:.5px;background:#1a4a8c;text-align:left;padding-left:12px;';var rows='';o.items.forEach(function(it,i){rows+='<tr style="background:'+(i%2===0?'#fff':'#f4f6fa')+'"><td style="'+tdS+'text-align:center;color:#666;">'+(i+1)+'</td><td style="'+tdS+'text-align:center;font-weight:700;color:#0d1b2a;">'+(it.code||'—')+'</td><td style="'+tdS+'text-align:left;padding-left:12px;font-weight:600;">'+it.desc+'</td><td style="'+tdS+'text-align:center;font-weight:800;font-size:13px;">'+it.qty+'</td><td style="'+tdS+'text-align:center;color:#555;">'+(it.unit||'—')+'</td></tr>';});return'<div style="font-family:Arial,sans-serif;background:#fff;width:420px;color:#000;border:1px solid #dde3ec;"><div style="background:linear-gradient(90deg,#1a4a8c 60%,#2a6ac8 100%);height:5px;"></div><div style="background:#1a4a8c;display:flex;justify-content:space-between;align-items:center;padding:14px 16px 12px;"><div><div style="color:#f0c040;font-size:20px;font-weight:900;">Faisal Goraya Industry</div><div style="color:#aac8f0;font-size:9.5px;margin-top:3px;">📞 03338058007 | 📍 Ali Pur Chattha</div></div><div style="text-align:right;"><div style="background:#f0c040;color:#1a4a8c;font-size:11px;font-weight:900;padding:4px 12px;border-radius:5px;">'+(o.orderNo||'ORDER')+'</div><div style="color:#bbd5f0;font-size:10px;margin-top:5px;">'+fmtDate(o.orderDate)+'</div></div></div><div style="background:#1e5aa8;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;"><div><div style="color:#fff;font-size:15px;font-weight:800;">'+o.clientName+'</div>'+(o.clientMobile?'<div style="color:#f0c040;font-size:10px;margin-top:2px;">📞 '+o.clientMobile+'</div>':'')+'</div>'+(o.clientCity?'<div style="background:#1a4a8c;color:#f7d96a;font-size:10px;font-weight:700;padding:3px 10px;border-radius:4px;">📍 '+o.clientCity+'</div>':'')+'</div><div style="display:flex;background:#f0f5ff;border-bottom:1px solid #d0e0f8;"><div style="flex:1;padding:8px 16px;border-right:1px solid #d0e0f8;"><div style="font-size:9px;font-weight:800;color:#555;text-transform:uppercase;margin-bottom:2px;">Order Date</div><div style="font-size:13px;font-weight:700;color:#1a4a8c;">'+fmtDate(o.orderDate)+'</div></div><div style="flex:1;padding:8px 16px;"><div style="font-size:9px;font-weight:800;color:#555;text-transform:uppercase;margin-bottom:2px;">Delivery Date</div><div style="font-size:13px;font-weight:700;color:'+(o.deliveryDate?'#c0392b':'#aaa')+'">'+(o.deliveryDate?fmtDate(o.deliveryDate):'—')+'</div></div></div>'+(o.notes?'<div style="background:#fff8e8;border-left:4px solid #f0c040;padding:8px 14px;font-size:11px;color:#555;">📝 '+o.notes+'</div>':'')+'<table style="width:100%;border-collapse:collapse;table-layout:fixed;"><colgroup><col style="width:7%"><col style="width:12%"><col style="width:46%"><col style="width:18%"><col style="width:17%"></colgroup><thead><tr><th style="'+thC+'">#</th><th style="'+thC+'">Code</th><th style="'+thL+'">Description</th><th style="'+thC+'">Qty</th><th style="'+thC+'">Unit</th></tr></thead><tbody>'+rows+'</tbody></table><div style="background:#e8f0ff;border-top:2px solid #1a4a8c;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;"><div style="font-size:11px;font-weight:700;color:#555;text-transform:uppercase;">Total Items</div><div style="font-size:16px;font-weight:900;color:#1a4a8c;">'+o.items.length+' item'+(o.items.length!==1?'s':'')+'</div></div><div style="background:#1a4a8c;text-align:center;padding:8px;"><div style="color:#f0c040;font-size:8.5px;font-weight:700;letter-spacing:.5px;">Faisal Goraya Industry • Production Order • '+fmtDate(o.orderDate)+'</div></div><div style="background:linear-gradient(90deg,#1a4a8c 60%,#2a6ac8 100%);height:4px;"></div></div>';}
 
-function editCurrentOrder(){
-  var o=orders.find(function(x){return x.id===viewingOrderId;});
-  if(!o) return;
-  editOrderId=o.id;
-  document.getElementById('order-no').value=o.orderNo||'';
-  document.getElementById('client-name').value=o.clientName||'';
-  document.getElementById('client-city').value=o.clientCity||'';
-  document.getElementById('client-mobile').value=o.clientMobile||'';
-  document.getElementById('order-date').value=o.orderDate||'';
-  document.getElementById('delivery-date').value=o.deliveryDate||'';
-  document.getElementById('order-notes').value=o.notes||'';
-  curItems=o.items.slice();
-  renderItemsTable();
-  document.getElementById('save-order-btn').textContent='💾 Update Order';
-  document.getElementById('save-order-btn').style.background='var(--navy2)';
-  showView('new-order');
-}
+// ── SERVICE WORKER ──
+window.addEventListener('load',function(){
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('./sw.js')
+      .then(function(){console.log('FGI PWA: SW registered ✓');})
+      .catch(function(e){console.log('SW failed:',e);});
+  }
+  setTimeout(function(){var inp=document.getElementById('lock-input');if(inp)inp.focus();},300);
+});
 
-function deleteCurrentOrder(){
-  if(!viewingOrderId) return;
-  if(!confirm('Yeh order delete karna chahte ho?')) return;
-  orders=orders.filter(function(o){return o.id!==viewingOrderId;});
-  saveOrders(function() {
-    toast('🗑 Order delete ho gaya!');
-    showView('list');
-  });
-}
-
-// ══════════════════════════════════════════
-// ── EXPORT / IMPORT ──
-// ══════════════════════════════════════════
-function openDataModal() {
-  document.getElementById('data-modal').classList.add('open');
-}
-function closeDataModal() {
-  document.getElementById('data-modal').classList.remove('open');
-}
-
-function exportData() {
-  var now = new Date();
-  var stamp = now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0')+'_'+now.getHours().toString().padStart(2,'0')+now.getMinutes().toString().padStart(2,'0');
-  var payload = {
-    version: 2,
-    exported: now.toISOString(),
-    totalOrders: orders.length,
-    orders: orders
-  };
-  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'FGI_Orders_Backup_' + stamp + '.json';
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(function() { document.body.removeChild(a); URL.revokeObjectURL(url); }, 2000);
-  toast('✅ Backup file download ho rahi hai!');
-  closeDataModal();
-}
-
-function importData(event) {
-  var file = event.target.files[0];
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      var data = JSON.parse(e.target.result);
-      var imported = [];
-      // Support both raw array and wrapped format
-      if (Array.isArray(data)) {
-        imported = data;
-      } else if (data.orders && Array.isArray(data.orders)) {
-        imported = data.orders;
-      } else {
-        toast('❌ File format sahi nahi!');
-        return;
-      }
-      if (!confirm('Import karne se ' + orders.length + ' purane orders replace ho jayen ge. ' + imported.length + ' naye orders ayen ge. Pakka karna hai?')) {
-        event.target.value = '';
-        return;
-      }
-      orders = imported;
-      saveOrders(function() {
-        toast('✅ ' + imported.length + ' orders import ho gaye!');
-        renderOrderList();
-        closeDataModal();
-      });
-    } catch(err) {
-      toast('❌ File parse error — valid JSON honi chahiye!');
-    }
-    event.target.value = '';
-  };
-  reader.readAsText(file);
-}
-
-// ══════════════════════════════════════════
-// ── IMAGE GENERATION ──
-// ══════════════════════════════════════════
-function generateOrderImage(){
-  var o=orders.find(function(x){return x.id===viewingOrderId;});
-  if(!o){toast('⚠️ Order nahi mila');return;}
-  toast('📸 Image ban rahi hai...',4000);
-
-  var wrap=document.getElementById('img-render-wrap');
-  wrap.innerHTML=buildOrderImageHTML(o);
-  wrap.style.left='-9999px';
-
-  setTimeout(function(){
-    if(typeof html2canvas==='undefined'){toast('❌ Library load nahi hui');return;}
-    html2canvas(wrap,{scale:3,useCORS:true,backgroundColor:'#ffffff',width:420,scrollX:0,scrollY:0,logging:false})
-    .then(function(canvas){
-      var fname='FGI_Order_'+o.clientName.replace(/\s+/g,'_')+'_'+o.orderDate+'.png';
-      canvas.toBlob(function(blob){
-        var url=URL.createObjectURL(blob);
-        var a=document.createElement('a');
-        a.href=url;a.download=fname;
-        document.body.appendChild(a);a.click();
-        setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},2000);
-        toast('✅ Image save ho gayi!');
-      },'image/png',1.0);
-    }).catch(function(e){toast('❌ Error: '+e.message);});
-  },400);
-}
-
-function buildOrderImageHTML(o){
-  var tdS='padding:9px 7px;font-size:12px;border-bottom:1px solid #edf0f5;color:#222;';
-  var thC='padding:9px 6px;font-size:10px;font-weight:800;color:#f7d96a;text-transform:uppercase;letter-spacing:.5px;background:#1a4a8c;text-align:center;';
-  var thL='padding:9px 6px;font-size:10px;font-weight:800;color:#f7d96a;text-transform:uppercase;letter-spacing:.5px;background:#1a4a8c;text-align:left;padding-left:12px;';
-  var rows='';
-  o.items.forEach(function(it,i){
-    rows+='<tr style="background:'+(i%2===0?'#fff':'#f4f6fa')+'">';
-    rows+='<td style="'+tdS+'text-align:center;color:#666;">'+(i+1)+'</td>';
-    rows+='<td style="'+tdS+'text-align:center;font-weight:700;color:#0d1b2a;">'+(it.code||'—')+'</td>';
-    rows+='<td style="'+tdS+'text-align:left;padding-left:12px;font-weight:600;">'+it.desc+'</td>';
-    rows+='<td style="'+tdS+'text-align:center;font-weight:800;font-size:13px;">'+it.qty+'</td>';
-    rows+='<td style="'+tdS+'text-align:center;color:#555;">'+(it.unit||'—')+'</td>';
-    rows+='</tr>';
-  });
-  return '<div style="font-family:Arial,sans-serif;background:#fff;width:420px;color:#000;border:1px solid #dde3ec;">'+
-    '<div style="background:linear-gradient(90deg,#1a4a8c 60%,#2a6ac8 100%);height:5px;"></div>'+
-    '<div style="background:#1a4a8c;display:flex;justify-content:space-between;align-items:center;padding:14px 16px 12px;">'+
-    '<div>'+
-    '<div style="color:#f0c040;font-size:20px;font-weight:900;letter-spacing:.5px;">Faisal Goraya Industry</div>'+
-    '<div style="color:#aac8f0;font-size:9.5px;margin-top:3px;">📞 03338058007 &nbsp;|&nbsp; 📍 Ali Pur Chattha</div>'+
-    '</div>'+
-    '<div style="text-align:right;">'+
-    '<div style="background:#f0c040;color:#1a4a8c;font-size:11px;font-weight:900;padding:4px 12px;border-radius:5px;letter-spacing:1px;">'+(o.orderNo||'PRODUCTION ORDER')+'</div>'+
-    '<div style="color:#bbd5f0;font-size:10px;margin-top:5px;">'+fmtDate(o.orderDate)+'</div>'+
-    '</div></div>'+
-    '<div style="background:#1e5aa8;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;">'+
-    '<div>'+
-    '<div style="color:#fff;font-size:15px;font-weight:800;">'+o.clientName+'</div>'+
-    (o.clientMobile?'<div style="color:#f0c040;font-size:10px;margin-top:2px;">📞 '+o.clientMobile+'</div>':'')+
-    '</div>'+
-    (o.clientCity?'<div style="background:#1a4a8c;color:#f7d96a;font-size:10px;font-weight:700;padding:3px 10px;border-radius:4px;">📍 '+o.clientCity+'</div>':'')+
-    '</div>'+
-    '<div style="display:flex;background:#f0f5ff;border-bottom:1px solid #d0e0f8;">'+
-    '<div style="flex:1;padding:8px 16px;border-right:1px solid #d0e0f8;">'+
-    '<div style="font-size:9px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">Order Date</div>'+
-    '<div style="font-size:13px;font-weight:700;color:#1a4a8c;">'+fmtDate(o.orderDate)+'</div>'+
-    '</div>'+
-    '<div style="flex:1;padding:8px 16px;">'+
-    '<div style="font-size:9px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">Delivery Date</div>'+
-    '<div style="font-size:13px;font-weight:700;color:'+(o.deliveryDate?'#c0392b':'#aaa')+'">'+(o.deliveryDate?fmtDate(o.deliveryDate):'—')+'</div>'+
-    '</div></div>'+
-    (o.notes?'<div style="background:#fff8e8;border-left:4px solid #f0c040;padding:8px 14px;font-size:11px;color:#555;">📝 '+o.notes+'</div>':'')+
-    '<table style="width:100%;border-collapse:collapse;table-layout:fixed;">'+
-    '<colgroup><col style="width:7%"><col style="width:12%"><col style="width:46%"><col style="width:18%"><col style="width:17%"></colgroup>'+
-    '<thead><tr>'+
-    '<th style="'+thC+'">#</th>'+
-    '<th style="'+thC+'">Code</th>'+
-    '<th style="'+thL+'">Description</th>'+
-    '<th style="'+thC+'">Qty</th>'+
-    '<th style="'+thC+'">Unit</th>'+
-    '</tr></thead>'+
-    '<tbody>'+rows+'</tbody></table>'+
-    '<div style="background:#e8f0ff;border-top:2px solid #1a4a8c;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;">'+
-    '<div style="font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;">Total Items</div>'+
-    '<div style="font-size:16px;font-weight:900;color:#1a4a8c;">'+o.items.length+' item'+(o.items.length!==1?'s':'')+'</div>'+
-    '</div>'+
-    '<div style="background:#1a4a8c;text-align:center;padding:8px;">'+
-    '<div style="color:#f0c040;font-size:8.5px;font-weight:700;letter-spacing:.5px;">Faisal Goraya Industry &nbsp;•&nbsp; Production Order &nbsp;•&nbsp; '+fmtDate(o.orderDate)+'</div>'+
-    '</div>'+
-    '<div style="background:linear-gradient(90deg,#1a4a8c 60%,#2a6ac8 100%);height:4px;"></div>'+
-    '</div>';
-}
-
-// ══════════════════════════════════════════
-// ── INIT — Load from IndexedDB first ──
-// ══════════════════════════════════════════
-(function init() {
+// ── INIT ──
+(async function init(){
+  await openOFIDB();
+  await loadPassword();
   setSaveStatus('saving');
-  dbGetAll(function(data) {
-    orders = data || [];
-
-    // If IndexedDB was empty, try to migrate from old localStorage
-    if (!orders.length) {
-      try {
-        var old = JSON.parse(localStorage.getItem('fgi_orders') || '[]');
-        if (old.length) {
-          orders = old;
-          saveOrders(function() {
-            toast('📦 ' + orders.length + ' orders localStorage se migrate ho gaye!');
-            setSaveStatus('saved');
-          });
-        } else {
-          setSaveStatus('saved');
-        }
-      } catch(e) { setSaveStatus('saved'); }
-    } else {
-      setSaveStatus('saved');
-    }
-
-    document.getElementById('order-date').value = today();
+  dbGetAll(function(data){
+    orders=data||[];
+    if(!orders.length){
+      try{var old=JSON.parse(localStorage.getItem('fgi_orders')||'[]');if(old.length){orders=old;saveOrders(function(){toast('📦 '+orders.length+' orders migrate ho gaye!');setSaveStatus('saved');});}}catch(e){setSaveStatus('saved');}
+    } else {setSaveStatus('saved');}
+    document.getElementById('order-date').value=today();
     renderOrderList();
   });
 })();
+
 </script>
 </body>
 </html>
